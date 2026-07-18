@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — EdTech4D</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-heading">
+      <h1>Welcome back</h1>
+      <p>Log in to keep going with your program, labs, and progress.</p>
+    </div>
+
+    <form class="auth-form" id="loginForm">
+      <label class="field-label" for="loginId">Username or Email</label>
+      <div class="input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <input type="text" id="loginId" placeholder="you@example.com" autocomplete="username" required>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="loginPassword">Password</label>
+        <a href="#forgot" class="forgot-link" id="forgotLink">Forgot password?</a>
+      </div>
+      <div class="input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye-off" style="display:none;"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.61 3.66M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+        </button>
+      </div>
+
+      <label class="remember-row">
+        <input type="checkbox" id="rememberMe">
+        <span>Remember me</span>
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-lg auth-submit">
+        Sign In
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </form>
+
+    <div class="auth-divider"><span>New to EdTech4D?</span></div>
+
+    <a href="create-account.html" class="btn btn-secondary btn-lg auth-secondary-btn">Create an Account</a>
+  </div>
+</section>
+
+<div class="modal-overlay" id="forgotOverlay" aria-hidden="true">
+  <div class="modal-card auth-card" role="dialog" aria-modal="true" aria-labelledby="forgotStepTitle">
+    <button type="button" class="modal-close" id="forgotClose" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+
+    <div class="modal-steps" id="forgotStepDots">
+      <span class="step-dot is-active" data-dot="1"></span>
+      <span class="step-dot" data-dot="2"></span>
+      <span class="step-dot" data-dot="3"></span>
+    </div>
+
+    <!-- Step 1: Email -->
+    <div class="modal-step" data-step="1">
+      <h2 id="forgotStepTitle">Reset your password</h2>
+      <p class="modal-sub">Enter the email linked to your account and we'll send you a 6-digit verification code.</p>
+
+      <label class="field-label" for="forgotEmail">Email</label>
+      <div class="input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><path d="M4 4h16v16H4z" opacity="0"></path><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6Z"></path><path d="m22 6-10 7L2 6"></path></svg>
+        <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <p class="field-hint field-hint--error" id="forgotEmailError" hidden>Enter a valid email address.</p>
+
+      <button type="button" class="btn btn-primary btn-lg auth-submit" id="sendOtpBtn">
+        Send code
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div class="modal-step" data-step="2" hidden>
+      <h2>Enter verification code</h2>
+      <p class="modal-sub">We sent a 6-digit code to <strong id="otpEmailDisplay">you@example.com</strong>.</p>
+
+      <div class="otp-row" id="otpRow">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="0" aria-label="Digit 1">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="1" aria-label="Digit 2">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="2" aria-label="Digit 3">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="3" aria-label="Digit 4">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="4" aria-label="Digit 5">
+        <input type="text" inputmode="numeric" maxlength="1" class="otp-input" data-otp-index="5" aria-label="Digit 6">
+      </div>
+      <p class="field-hint field-hint--error" id="otpError" hidden>That code isn't right. Try again.</p>
+      <p class="otp-demo-note" id="otpDemoNote"></p>
+
+      <button type="button" class="btn btn-primary btn-lg auth-submit" id="verifyOtpBtn">Verify code</button>
+      <button type="button" class="link-btn" id="resendOtpBtn">Resend code</button>
+      <button type="button" class="link-btn link-btn--muted" id="backToEmailBtn">Use a different email</button>
+    </div>
+
+    <!-- Step 3: New password -->
+    <div class="modal-step" data-step="3" hidden>
+      <h2>Set a new password</h2>
+      <p class="modal-sub">Choose a strong password you haven't used before.</p>
+
+      <label class="field-label" for="newPassword">New password</label>
+      <div class="input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <input type="password" id="newPassword" placeholder="At least 8 characters" autocomplete="new-password" required>
+      </div>
+
+      <label class="field-label" for="confirmPassword">Confirm new password</label>
+      <div class="input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <input type="password" id="confirmPassword" placeholder="Re-enter your new password" autocomplete="new-password" required>
+      </div>
+      <p class="field-hint field-hint--error" id="passwordError" hidden>Passwords must match and be at least 8 characters.</p>
+
+      <button type="button" class="btn btn-primary btn-lg auth-submit" id="resetPasswordBtn">Reset password</button>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div class="modal-step modal-step--success" data-step="4" hidden>
+      <div class="success-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h2>Password updated</h2>
+      <p class="modal-sub">Your password has been reset. You can now sign in with your new password.</p>
+      <button type="button" class="btn btn-primary btn-lg auth-submit" id="backToLoginBtn">Back to sign in</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="header-loader.js"></script>
+<script>
+  const toggleBtn = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("loginPassword");
+  const eyeIcon = toggleBtn.querySelector(".icon-eye");
+  const eyeOffIcon = toggleBtn.querySelector(".icon-eye-off");
+
+  toggleBtn.addEventListener("click", () => {
+    const isHidden = passwordInput.type === "password";
+    passwordInput.type = isHidden ? "text" : "password";
+    eyeIcon.style.display = isHidden ? "none" : "block";
+    eyeOffIcon.style.display = isHidden ? "block" : "none";
+    toggleBtn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+  });
+
+  document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    // Hook up real authentication here.
+    alert("Login submitted (demo only — connect this to your backend).");
+  });
+
+  /* ---------- Forgot password modal ---------- */
+  (() => {
+    const overlay = document.getElementById("forgotOverlay");
+    const openLink = document.getElementById("forgotLink");
+    const closeBtn = document.getElementById("forgotClose");
+    const steps = overlay.querySelectorAll(".modal-step");
+    const dots = overlay.querySelectorAll(".step-dot");
+
+    const emailInput = document.getElementById("forgotEmail");
+    const emailError = document.getElementById("forgotEmailError");
+    const sendOtpBtn = document.getElementById("sendOtpBtn");
+
+    const otpEmailDisplay = document.getElementById("otpEmailDisplay");
+    const otpInputs = Array.from(document.querySelectorAll(".otp-input"));
+    const otpError = document.getElementById("otpError");
+    const otpDemoNote = document.getElementById("otpDemoNote");
+    const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+    const resendOtpBtn = document.getElementById("resendOtpBtn");
+    const backToEmailBtn = document.getElementById("backToEmailBtn");
+
+    const newPassword = document.getElementById("newPassword");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const passwordError = document.getElementById("passwordError");
+    const resetPasswordBtn = document.getElementById("resetPasswordBtn");
+
+    const backToLoginBtn = document.getElementById("backToLoginBtn");
+
+    let currentOtp = "";
+    let resendTimer = null;
+
+    // In production, this calls your backend, which emails the code.
+    // Here we generate it locally so the flow can be demoed end-to-end.
+    function generateOtp() {
+      return String(Math.floor(100000 + Math.random() * 900000));
+    }
+
+    function goToStep(stepNum) {
+      steps.forEach(s => s.hidden = Number(s.dataset.step) !== stepNum);
+      dots.forEach(d => {
+        const dotNum = Number(d.dataset.dot);
+        d.classList.toggle("is-active", dotNum === stepNum);
+        d.classList.toggle("is-done", dotNum < stepNum);
+      });
+      const overlayDots = overlay.querySelector(".modal-steps");
+      if (overlayDots) overlayDots.style.display = stepNum <= 3 ? "flex" : "none";
+    }
+
+    function openModal() {
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      goToStep(1);
+      emailInput.value = document.getElementById("loginId").value.includes("@")
+        ? document.getElementById("loginId").value : "";
+      emailError.hidden = true;
+      emailInput.focus();
+    }
+
+    function closeModal() {
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      clearInterval(resendTimer);
+      otpInputs.forEach(i => i.value = "");
+      newPassword.value = "";
+      confirmPassword.value = "";
+      otpError.hidden = true;
+      passwordError.hidden = true;
+    }
+
+    openLink.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
+    });
+
+    function startResendTimer() {
+      let seconds = 30;
+      resendOtpBtn.disabled = true;
+      resendOtpBtn.textContent = `Resend code (${seconds}s)`;
+      clearInterval(resendTimer);
+      resendTimer = setInterval(() => {
+        seconds -= 1;
+        if (seconds <= 0) {
+          clearInterval(resendTimer);
+          resendOtpBtn.disabled = false;
+          resendOtpBtn.textContent = "Resend code";
+        } else {
+          resendOtpBtn.textContent = `Resend code (${seconds}s)`;
+        }
+      }, 1000);
+    }
+
+    function sendCode() {
+      const email = emailInput.value.trim();
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!isValid) {
+        emailError.hidden = false;
+        emailInput.focus();
+        return;
+      }
+      emailError.hidden = true;
+
+      currentOtp = generateOtp();
+      otpEmailDisplay.textContent = email;
+      // Demo only: a real backend would email this code instead of showing it here.
+      otpDemoNote.textContent = `Demo mode — no email server connected. Your code is ${currentOtp}.`;
+      otpInputs.forEach(i => i.value = "");
+      otpError.hidden = true;
+      goToStep(2);
+      startResendTimer();
+      otpInputs[0].focus();
+    }
+
+    sendOtpBtn.addEventListener("click", sendCode);
+    resendOtpBtn.addEventListener("click", () => { if (!resendOtpBtn.disabled) sendCode(); });
+    backToEmailBtn.addEventListener("click", () => { clearInterval(resendTimer); goToStep(1); emailInput.focus(); });
+
+    otpInputs.forEach((input, idx) => {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^0-9]/g, "");
+        if (input.value && idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && idx > 0) otpInputs[idx - 1].focus();
+      });
+      input.addEventListener("paste", (e) => {
+        const text = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9]/g, "");
+        if (text.length) {
+          e.preventDefault();
+          text.split("").slice(0, otpInputs.length).forEach((ch, i) => { otpInputs[i].value = ch; });
+          otpInputs[Math.min(text.length, otpInputs.length) - 1].focus();
+        }
+      });
+    });
+
+    verifyOtpBtn.addEventListener("click", () => {
+      const entered = otpInputs.map(i => i.value).join("");
+      if (entered.length < 6 || entered !== currentOtp) {
+        otpError.hidden = false;
+        overlay.querySelector(".otp-row").classList.add("shake");
+        setTimeout(() => overlay.querySelector(".otp-row").classList.remove("shake"), 400);
+        return;
+      }
+      otpError.hidden = true;
+      clearInterval(resendTimer);
+      goToStep(3);
+      newPassword.focus();
+    });
+
+    resetPasswordBtn.addEventListener("click", () => {
+      const pw = newPassword.value;
+      const cpw = confirmPassword.value;
+      if (pw.length < 8 || pw !== cpw) {
+        passwordError.hidden = false;
+        return;
+      }
+      passwordError.hidden = true;
+      // Hook up your real "update password" API call here.
+      goToStep(4);
+    });
+
+    backToLoginBtn.addEventListener("click", closeModal);
+  })();
+</script>
+
+</body>
+</html>
