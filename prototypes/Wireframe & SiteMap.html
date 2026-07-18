@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EdTech4D — Site Wireframe</title>
+<style>
+  :root{
+    --ink:#1f2937;
+    --muted:#6b7280;
+    --line:#c7cfdb;
+    --line-soft:#dbe1ea;
+    --imgfill:#eef1f6;
+    --border:#d7dee8;
+    --frame-bg:#ffffff;
+    --canvas:#eef0f3;
+    --tag:#2563eb;
+    --tag-bg:#eaf1ff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--canvas);
+    color:var(--ink);
+  }
+
+  /*  Top control bar  */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:14px;
+    padding:14px 22px;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+  }
+  .topbar h1{ font-size:15px; margin:0; font-weight:700; }
+  .topbar .sub{ font-size:12px; color:var(--muted); }
+  .toggle{
+    margin-left:auto;
+    display:flex; gap:6px;
+    background:#f1f3f7; padding:4px; border-radius:8px;
+  }
+  .toggle button{
+    border:none; background:transparent; padding:7px 14px;
+    font-size:12.5px; font-weight:600; color:var(--muted);
+    border-radius:6px; cursor:pointer;
+  }
+  .toggle button.active{ background:#111827; color:#fff; }
+  .legend{ display:flex; gap:12px; align-items:center; font-size:11px; color:var(--muted); margin-left:18px; }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .legend i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+  .legend .lg-img{ background:var(--imgfill); border:1px solid var(--line); }
+  .legend .lg-line{ background:var(--line); height:6px; width:14px; border-radius:2px; }
+  .legend .lg-btn{ border:1.5px solid var(--ink); background:transparent; }
+  .legend .lg-tag{ background:var(--tag-bg); border:1px solid var(--tag); }
+
+  /*  Canvas / board  */
+  .board{
+    display:flex; gap:46px;
+    padding:40px;
+    overflow-x:auto;
+    align-items:flex-start;
+  }
+  .page-col{ flex:0 0 auto; }
+  .page-label{
+    font-size:12.5px; font-weight:700; color:#9aa3b2;
+    text-transform:none; margin:0 0 10px 2px;
+  }
+  .page-frame{
+    width:375px;
+    background:var(--frame-bg);
+    border:1px solid var(--border);
+    border-radius:6px;
+    box-shadow:0 10px 30px rgba(20,25,40,.06);
+    overflow:hidden;
+    transition:width .2s ease;
+  }
+  body.desktop .page-frame{ width:1180px; }
+
+  /* - Wireframe primitives - */
+  .wf-section{
+    position:relative;
+    border-top:1px dashed var(--line-soft);
+    padding:22px 20px;
+  }
+  .page-frame > .wf-section:first-child{ border-top:none; }
+  .wf-tag{
+    display:inline-block;
+    font-size:10px; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--tag);
+    background:var(--tag-bg);
+    border:1px solid var(--tag);
+    border-radius:4px;
+    padding:3px 7px;
+    margin-bottom:14px;
+  }
+
+  .line{ height:9px; background:var(--line); border-radius:2px; margin-bottom:8px; }
+  .line.sm{ height:6px; }
+  .line.lg{ height:14px; }
+  .line.w-100{ width:100%; } .line.w-90{ width:90%; } .line.w-80{ width:80%; }
+  .line.w-70{ width:70%; } .line.w-60{ width:60%; } .line.w-50{ width:50%; }
+  .line.w-40{ width:40%; } .line.w-30{ width:30%; } .line.w-20{ width:20%; }
+
+  .imgbox{
+    width:100%;
+    background-color:var(--imgfill);
+    border:1px solid var(--line);
+    border-radius:4px;
+    background-image:
+      linear-gradient(to top right, transparent calc(50% - .5px), var(--line) 50%, transparent calc(50% + .5px)),
+      linear-gradient(to top left, transparent calc(50% - .5px), var(--line) 50%, transparent calc(50% + .5px));
+  }
+
+  .btnbox{
+    display:inline-flex; align-items:center; justify-content:center;
+    border:1.5px solid var(--ink);
+    border-radius:4px;
+    padding:9px 18px;
+    font-size:10.5px; font-weight:700; letter-spacing:.02em;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .btnbox.ghost{ border-style:dashed; color:var(--muted); border-color:var(--line); }
+  .circle{ border-radius:50%; background:var(--imgfill); border:1px solid var(--line); }
+  .pillbox{
+    display:inline-flex; align-items:center;
+    border:1px solid var(--line); border-radius:999px;
+    padding:5px 10px; font-size:9px; color:var(--muted);
+  }
+  .card{ border:1px solid var(--border); border-radius:6px; padding:14px; }
+  .grid{ display:grid; gap:14px; }
+
+  /* mobile-first grid defaults */
+  .grid-2{ grid-template-columns:1fr; }
+  .grid-3{ grid-template-columns:1fr; }
+  .grid-4{ grid-template-columns:1fr; }
+
+  body.desktop .grid-2{ grid-template-columns:repeat(2,1fr); }
+  body.desktop .grid-3{ grid-template-columns:repeat(3,1fr); }
+  body.desktop .grid-4{ grid-template-columns:repeat(4,1fr); }
+
+  /* - Header - */
+  .wf-header{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
+  .wf-header .logo{ width:34px; height:20px; background:var(--imgfill); border:1px solid var(--line); border-radius:3px; }
+  .wf-header .navlines{ display:none; }
+  body.desktop .wf-header .navlines{ display:flex; gap:18px; }
+  .wf-header .navlines .line{ width:52px; margin:0; }
+  .wf-header .burger{ width:22px; height:14px; display:flex; flex-direction:column; justify-content:space-between; }
+  body.desktop .wf-header .burger{ display:none; }
+  .wf-header .burger span{ height:2px; background:var(--ink); display:block; }
+  .wf-header .actions{ display:flex; align-items:center; gap:10px; }
+
+  /* - Hero - */
+  .hero-ctas{ display:flex; gap:10px; margin:12px 0; flex-wrap:wrap; }
+  .pill-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+
+  .hero-layout{ display:flex; flex-direction:column; gap:18px; }
+  body.desktop .hero-layout{ flex-direction:row; align-items:center; gap:40px; }
+  .hero-copy{ flex:1; }
+  .hero-media{ flex:1; }
+
+  /* - Steps - */
+  .steps-row{ display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; }
+  .step-chip{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; width:64px; }
+  .step-chip .circle{ width:30px; height:30px; }
+  .progressline{ height:5px; background:var(--imgfill); border:1px solid var(--line); border-radius:99px; margin-bottom:16px; }
+  .step-panel{ display:flex; flex-direction:column; gap:12px; border:1px solid var(--border); border-radius:6px; padding:16px; }
+  body.desktop .step-panel{ flex-direction:row; align-items:center; justify-content:space-between; }
+
+  /* - Cards (programs / features) - */
+  .icon-sq{ width:38px; height:38px; border-radius:8px; }
+
+  /* - Pricing - */
+  .price-card{ display:flex; flex-direction:column; gap:8px; }
+  .price-card.rec{ border:2px solid var(--tag); }
+
+  /* - Testimonials - */
+  .t-card{ display:flex; flex-direction:column; gap:8px; }
+  .t-head{ display:flex; align-items:center; gap:10px; }
+  .avatar{ width:34px; height:34px; }
+
+  /* - FAQ - */
+  .faq-row{ display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--line-soft); }
+  .chev{ width:10px; height:10px; border-right:2px solid var(--line); border-bottom:2px solid var(--line); transform:rotate(45deg); flex:0 0 auto; }
+
+  /* - Auth - */
+  .authcard{ max-width:320px; margin:0 auto; display:flex; flex-direction:column; gap:10px; }
+  .fieldbox{ height:34px; border:1px solid var(--line); border-radius:5px; background:#fbfcfe; }
+
+  /* - Footer - */
+  .footer-social{ display:flex; gap:8px; margin:10px 0; }
+  .footer-social .circle{ width:22px; height:22px; }
+
+  /* - Sitemap - */
+  .sitemap-wrap{ padding:8px 40px 60px; }
+  .sitemap-head{ margin:0 0 26px; }
+  .sitemap-head h2{ font-size:15px; margin:0 0 4px; font-weight:700; color:var(--ink); }
+  .sitemap-head p{ font-size:12px; margin:0; color:var(--muted); }
+  .sitemap-legend{ display:flex; gap:16px; align-items:center; font-size:11px; color:var(--muted); margin-top:10px; }
+  .sitemap-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .sitemap-legend i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+  .sitemap-legend .sm-page{ background:#fff; border:1.5px solid var(--ink); }
+  .sitemap-legend .sm-auth{ background:var(--tag-bg); border:1.5px solid var(--tag); }
+  .sitemap-legend .sm-util{ background:#f1f3f7; border:1.5px dashed var(--muted); }
+
+  .site-frame{
+    background:var(--frame-bg);
+    border:1px solid var(--border);
+    border-radius:8px;
+    box-shadow:0 10px 30px rgba(20,25,40,.06);
+    padding:44px 20px 28px;
+    overflow-x:auto;
+  }
+
+  .tree, .tree ul{ list-style:none; margin:0; padding:0; position:relative; display:table; }
+  .tree{ margin:0 auto; text-align:center; }
+  .tree ul{ width:100%; }
+  .tree li{ display:table-cell; padding:14px 14px 0; vertical-align:top; position:relative; }
+
+  /* horizontal connector spanning each row of siblings */
+  .tree li::before{
+    content:""; position:absolute; top:0; left:0; right:0;
+    border-top:2px solid #4b5563;
+  }
+  .tree li:first-child::before{ left:50%; border-top-left-radius:6px; }
+  .tree li:last-child::before{ right:50%; border-top-right-radius:6px; }
+  .tree li:only-child::before{ display:none; }
+
+  /* arrow dropping into each node — no connecting line, just the arrowhead */
+  .node-wrap{ position:relative; display:flex; flex-direction:column; align-items:center; }
+  .drop-arrow{
+    width:0; height:0; margin-top:6px;
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-top:9px solid var(--muted);
+  }
+
+  .node{
+    display:inline-flex; flex-direction:column; align-items:center; gap:3px;
+    border:1.5px solid var(--ink); border-radius:7px;
+    background:#fff; padding:10px 14px; min-width:118px;
+    position:relative;
+  }
+  .node .n-name{ font-size:12px; font-weight:700; color:var(--ink); }
+  .node .n-file{ font-size:9.5px; color:var(--muted); font-family:monospace; }
+  .node.root{ border-width:2px; }
+  .node.auth{ border-color:var(--tag); background:var(--tag-bg); }
+  .node.auth .n-name{ color:var(--tag); }
+  .node.util{ border-style:dashed; border-color:var(--muted); background:#f1f3f7; }
+  .node.util .n-name, .node.util .n-file{ color:var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>EdTech4D — Full Site Wireframe</h1>
+  <span class="sub">Low-fidelity layout plan · not final design</span>
+  <div class="legend">
+    <span><i class="lg-img"></i> image</span>
+    <span><i class="lg-line"></i> text</span>
+    <span><i class="lg-btn"></i> button</span>
+    <span><i class="lg-tag"></i> section label</span>
+  </div>
+  <div class="toggle">
+    <button id="btnMobile" class="active">Mobile · 375px</button>
+    <button id="btnDesktop">Desktop · 1180px</button>
+  </div>
+  <div class="toggle" style="margin-left:8px;">
+    <button id="btnPages" class="active">Pages</button>
+    <button id="btnSitemap">Sitemap</button>
+  </div>
+</div>
+
+<div class="board" id="board">
+
+  <!--  HOME  -->
+  <div class="page-col">
+    <p class="page-label">Home — index.html</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <nav class="navlines">
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div>
+        </nav>
+        <div class="actions">
+          <div class="line sm" style="width:34px;"></div>
+          <div class="burger"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Hero</span>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="line lg w-90"></div>
+            <div class="line lg w-70"></div>
+            <div class="line w-100"></div>
+            <div class="line w-80"></div>
+            <div class="hero-ctas"><div class="btnbox">Explore Programs →</div></div>
+            <div class="pill-row"><div class="pillbox">✓ Hands-on Labs</div><div class="pillbox">✓ 24/7 Access</div></div>
+          </div>
+          <div class="hero-media"><div class="imgbox" style="aspect-ratio:16/10;"></div></div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">How It Works</span>
+        <div class="line w-40" style="margin-bottom:14px;"></div>
+        <div class="steps-row">
+          <div class="step-chip"><div class="circle"></div><div class="line sm w-100"></div></div>
+          <div class="step-chip"><div class="circle"></div><div class="line sm w-100"></div></div>
+          <div class="step-chip"><div class="circle"></div><div class="line sm w-100"></div></div>
+          <div class="step-chip"><div class="circle"></div><div class="line sm w-100"></div></div>
+          <div class="step-chip"><div class="circle"></div><div class="line sm w-100"></div></div>
+        </div>
+        <div class="progressline"></div>
+        <div class="step-panel">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="imgbox" style="width:44px; height:44px; flex:0 0 auto;"></div>
+            <div><div class="line w-100" style="width:150px;"></div><div class="line sm w-80" style="width:120px;"></div></div>
+          </div>
+          <div class="btnbox">Next</div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Program Highlights</span>
+        <div class="line lg w-60"></div>
+        <div class="line w-80" style="margin-bottom:16px;"></div>
+        <div class="grid grid-3">
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">Job-Ready</div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">In-Demand</div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">High Growth</div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">Security+</div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">Future-Ready</div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-90"></div><div class="line sm w-60"></div><div class="pillbox">Income Path</div></div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Features / Why Premium</span>
+        <div class="line lg w-70"></div>
+        <div class="line w-80" style="margin-bottom:16px;"></div>
+        <div class="grid grid-3">
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card"><div class="icon-sq imgbox"></div><div class="line w-80"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Footer</span>
+        <div class="line w-40"></div>
+        <div class="line sm w-90"></div>
+        <div class="line sm w-70"></div>
+        <div class="footer-social"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>
+        <div class="line sm w-50"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!--  PROGRAMS  -->
+  <div class="page-col">
+    <p class="page-label">Programs — programs.html</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <nav class="navlines">
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div>
+        </nav>
+        <div class="actions">
+          <div class="line sm" style="width:34px;"></div>
+          <div class="burger"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Hero</span>
+        <div class="line lg w-70"></div>
+        <div class="line w-90"></div>
+        <div class="line w-60"></div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Program Highlights</span>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Basic–Advanced</div><div class="pillbox">~180 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Intermediate</div><div class="pillbox">~110 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Intermediate</div><div class="pillbox">~120 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Entry-Level</div><div class="pillbox">~98 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Beginner</div><div class="pillbox">~95 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+          <div class="card">
+            <div class="icon-sq imgbox"></div>
+            <div class="line w-90"></div>
+            <div style="display:flex; gap:6px; margin:6px 0;"><div class="pillbox">Beginner</div><div class="pillbox">~60 hrs</div></div>
+            <div class="line sm w-100"></div><div class="line sm w-80"></div>
+            <div class="btnbox" style="margin-top:8px;">View Program</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Footer</span>
+        <div class="line w-40"></div>
+        <div class="line sm w-90"></div>
+        <div class="footer-social"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>
+        <div class="line sm w-50"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!--  PRICING  -->
+  <div class="page-col">
+    <p class="page-label">Membership — pricing.html</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <nav class="navlines">
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div>
+        </nav>
+        <div class="actions">
+          <div class="line sm" style="width:34px;"></div>
+          <div class="burger"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Hero</span>
+        <div class="pillbox" style="margin-bottom:10px;">● Premium Membership</div>
+        <div class="line lg w-80"></div>
+        <div class="line lg w-50"></div>
+        <div class="line w-100"></div>
+        <div class="line w-70"></div>
+        <div class="grid grid-3" style="margin:14px 0;">
+          <div><div class="line lg w-50"></div><div class="line sm w-80"></div></div>
+          <div><div class="line lg w-50"></div><div class="line sm w-80"></div></div>
+          <div><div class="line lg w-50"></div><div class="line sm w-80"></div></div>
+        </div>
+        <div class="btnbox">Get Started</div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Enroll CTA — Pricing Plans</span>
+        <div class="line lg w-50"></div>
+        <div class="line w-80" style="margin-bottom:16px;"></div>
+        <div class="grid grid-3">
+          <div class="card price-card">
+            <div class="pillbox">Free</div>
+            <div class="line lg w-40"></div>
+            <div class="line sm w-100"></div><div class="line sm w-90"></div><div class="line sm w-70"></div>
+            <div class="btnbox ghost" style="margin-top:8px;">Start Free</div>
+          </div>
+          <div class="card price-card rec">
+            <div class="pillbox">Premium · Recommended</div>
+            <div class="line lg w-60"></div>
+            <div class="line sm w-100"></div><div class="line sm w-90"></div><div class="line sm w-70"></div>
+            <div class="btnbox" style="margin-top:8px;">Get Premium</div>
+          </div>
+          <div class="card price-card">
+            <div class="pillbox">Premium Yearly</div>
+            <div class="line lg w-60"></div>
+            <div class="line sm w-100"></div><div class="line sm w-90"></div><div class="line sm w-70"></div>
+            <div class="btnbox ghost" style="margin-top:8px;">Get Yearly</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Enroll CTA — Business</span>
+        <div class="line lg w-60"></div>
+        <div class="line w-100"></div>
+        <div class="line w-70" style="margin-bottom:12px;"></div>
+        <div class="btnbox">Contact Sales</div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Secondary CTA</span>
+        <div class="line lg w-50" style="margin:0 auto 10px;"></div>
+        <div class="btnbox" style="margin:0 auto;">Visit FAQ</div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Footer</span>
+        <div class="line w-40"></div>
+        <div class="line sm w-90"></div>
+        <div class="footer-social"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>
+        <div class="line sm w-50"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!--  SUCCESS STORIES  -->
+  <div class="page-col">
+    <p class="page-label">Success Stories — success-stories.html</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <nav class="navlines">
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div>
+        </nav>
+        <div class="actions">
+          <div class="line sm" style="width:34px;"></div>
+          <div class="burger"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Hero</span>
+        <div class="line lg w-60"></div>
+        <div class="line w-80"></div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Social Proof — Testimonials</span>
+        <div class="grid grid-3">
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+          <div class="card t-card"><div class="t-head"><div class="circle avatar"></div><div style="flex:1;"><div class="line sm w-80"></div><div class="line sm w-60"></div></div></div><div class="line sm w-100"></div><div class="line sm w-100"></div><div class="line sm w-70"></div></div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Footer</span>
+        <div class="line w-40"></div>
+        <div class="line sm w-90"></div>
+        <div class="footer-social"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>
+        <div class="line sm w-50"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!--  FAQ  -->
+  <div class="page-col">
+    <p class="page-label">FAQ — faq.html</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <nav class="navlines">
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div><div class="line sm w-100"></div>
+          <div class="line sm w-100"></div>
+        </nav>
+        <div class="actions">
+          <div class="line sm" style="width:34px;"></div>
+          <div class="burger"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Hero</span>
+        <div class="line lg w-60"></div>
+        <div class="line w-80"></div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">FAQ </span>
+        <div class="faq-row"><div class="line sm w-70"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-60"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-80"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-50"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-70"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-60"></div><div class="chev"></div></div>
+        <div class="faq-row"><div class="line sm w-80"></div><div class="chev"></div></div>
+        <div class="faq-row" style="border-bottom:none;"><div class="line sm w-50"></div><div class="chev"></div></div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Enroll CTA</span>
+        <div class="line lg w-50" style="margin:0 auto 10px;"></div>
+        <div class="btnbox" style="margin:0 auto;">Contact Support</div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Footer</span>
+        <div class="line w-40"></div>
+        <div class="line sm w-90"></div>
+        <div class="footer-social"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>
+        <div class="line sm w-50"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!--  LOGIN / CREATE ACCOUNT  -->
+  <div class="page-col">
+    <p class="page-label">Login &amp; Create Account</p>
+    <div class="page-frame">
+
+      <div class="wf-header">
+        <div class="logo"></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <section class="wf-section">
+        <span class="wf-tag">Auth Form — Login</span>
+        <div class="authcard">
+          <div class="line lg w-60" style="margin:0 auto 6px;"></div>
+          <div class="line sm w-40" style="margin:0 auto 14px;"></div>
+          <div class="line sm w-30"></div>
+          <div class="fieldbox"></div>
+          <div class="line sm w-30"></div>
+          <div class="fieldbox"></div>
+          <div class="line sm w-40" style="margin-left:auto;"></div>
+          <div class="btnbox" style="margin-top:6px;">Log In</div>
+          <div class="line sm w-50" style="margin:10px auto 0;"></div>
+        </div>
+      </section>
+
+      <section class="wf-section">
+        <span class="wf-tag">Auth Form — Create Account</span>
+        <div class="authcard">
+          <div class="line lg w-70" style="margin:0 auto 14px;"></div>
+          <div class="line sm w-30"></div>
+          <div class="fieldbox"></div>
+          <div class="line sm w-30"></div>
+          <div class="fieldbox"></div>
+          <div class="line sm w-30"></div>
+          <div class="fieldbox"></div>
+          <div class="btnbox" style="margin-top:6px;">Create Account</div>
+          <div class="line sm w-60" style="margin:10px auto 0;"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="sitemap-wrap" id="sitemap" style="display:none;">
+  <div class="sitemap-head">
+    <h2>Site Structure — jobskillshare.org</h2>
+    <p>How the 6 pages relate through the header nav and the login action slot.</p>
+    <div class="sitemap-legend">
+      <span><i class="sm-page"></i> primary page</span>
+      <span><i class="sm-auth"></i> auth flow</span>
+      <span><i class="sm-util"></i> shared on every page</span>
+    </div>
+  </div>
+
+  <div class="site-frame">
+    <ul class="tree">
+      <li>
+        <div class="node-wrap">
+          <div class="node root">
+            <span class="n-name">Home</span>
+            <span class="n-file">index.html</span>
+          </div>
+        </div>
+        <ul>
+          <li>
+            <div class="node-wrap">
+              <div class="drop-arrow"></div>
+              <div class="node">
+                <span class="n-name">Programs</span>
+                <span class="n-file">programs.html</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="node-wrap">
+              <div class="drop-arrow"></div>
+              <div class="node">
+                <span class="n-name">Membership</span>
+                <span class="n-file">pricing.html</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="node-wrap">
+              <div class="drop-arrow"></div>
+              <div class="node">
+                <span class="n-name">FAQ</span>
+                <span class="n-file">faq.html</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="node-wrap">
+              <div class="drop-arrow"></div>
+              <div class="node">
+                <span class="n-name">Success Stories</span>
+                <span class="n-file">success-stories.html</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="node-wrap">
+              <div class="drop-arrow"></div>
+              <div class="node auth">
+                <span class="n-name">Login</span>
+                <span class="n-file">login.html</span>
+              </div>
+            </div>
+            <ul>
+              <li>
+                <div class="node-wrap">
+                  <div class="drop-arrow"></div>
+                  <div class="node auth">
+                    <span class="n-name">Create Account</span>
+                    <span class="n-file">create-account.html</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <div style="display:flex; justify-content:center; gap:14px; margin-top:36px; flex-wrap:wrap;">
+      <div class="node util"><span class="n-name">Header nav</span><span class="n-file">header.html</span></div>
+      <div class="node util"><span class="n-name">Footer</span><span class="n-file">footer.html</span></div>
+    </div>
+  </div>
+
+  <p style="font-size:11px; color:var(--muted); max-width:640px; margin:18px auto 0; text-align:center;">
+    Nav order is fixed as Home → Programs → Membership → FAQ → Success Stories, with Login pulled into its own
+    action slot on the right instead of the hamburger menu, since sign-in is a high-frequency action.
+    Header and footer are shared partials loaded on every page.
+  </p>
+</div>
+
+<script>
+  const bPages = document.getElementById('btnPages');
+  const bSitemap = document.getElementById('btnSitemap');
+  const boardEl = document.getElementById('board');
+  const sitemapEl = document.getElementById('sitemap');
+  bPages.addEventListener('click', () => {
+    boardEl.style.display = 'flex';
+    sitemapEl.style.display = 'none';
+    bPages.classList.add('active'); bSitemap.classList.remove('active');
+  });
+  bSitemap.addEventListener('click', () => {
+    boardEl.style.display = 'none';
+    sitemapEl.style.display = 'block';
+    bSitemap.classList.add('active'); bPages.classList.remove('active');
+  });
+</script>
+
+<script>
+  const body = document.body;
+  const bMobile = document.getElementById('btnMobile');
+  const bDesktop = document.getElementById('btnDesktop');
+  bMobile.addEventListener('click', () => {
+    body.classList.remove('desktop');
+    bMobile.classList.add('active'); bDesktop.classList.remove('active');
+  });
+  bDesktop.addEventListener('click', () => {
+    body.classList.add('desktop');
+    bDesktop.classList.add('active'); bMobile.classList.remove('active');
+  });
+</script>
+
+</body>
+</html>
