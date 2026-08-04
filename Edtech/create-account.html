@@ -6,7 +6,7 @@
 <title>Create Account — EdTech4D</title>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="auth-page">
 
 <div id="header-placeholder"></div>
 
@@ -104,6 +104,17 @@
         </span>
       </label>
 
+      <div class="billing-toggle-group" id="billingToggleGroup" hidden>
+        <label class="billing-toggle-row" for="billingMonthly">
+          <input type="checkbox" id="billingMonthly" name="billingCycle" value="monthly">
+          <span><strong>Monthly</strong><small>$50/month, billed monthly</small></span>
+        </label>
+        <label class="billing-toggle-row" for="billingYearly">
+          <input type="checkbox" id="billingYearly" name="billingCycle" value="yearly">
+          <span><strong>Yearly</strong><small>$549/year — save $51</small></span>
+        </label>
+      </div>
+
       <div class="payment-section" id="paymentSection" hidden>
         <div class="form-section-divider"><span>Payment Information</span></div>
 
@@ -148,15 +159,15 @@
   </div>
 </section>
 
-<div id="footer-placeholder"></div>
-
 <script src="header-loader.js"></script>
-<script src="footer-loader.js"></script>
 <script>
 (function () {
   const form = document.getElementById("signupForm");
   const wantsPremium = document.getElementById("wantsPremium");
   const paymentSection = document.getElementById("paymentSection");
+  const billingToggleGroup = document.getElementById("billingToggleGroup");
+  const billingMonthly = document.getElementById("billingMonthly");
+  const billingYearly = document.getElementById("billingYearly");
 
   const cardNumber = document.getElementById("cardNumber");
   const cardExpiry = document.getElementById("cardExpiry");
@@ -176,10 +187,12 @@
     });
   });
 
-  // ---------- Premium checkbox reveals payment fields ----------
+  // ---------- Premium checkbox reveals payment fields + billing choice ----------
   function syncPremiumFields() {
     const isPremium = wantsPremium.checked;
     paymentSection.hidden = !isPremium;
+    billingToggleGroup.hidden = !isPremium;
+
     // Card fields are only required (and only validated) when Premium is selected.
     [cardNumber, cardExpiry, cardCvc].forEach((field) => {
       if (isPremium) {
@@ -189,8 +202,44 @@
         field.closest(".form-field").classList.remove("invalid");
       }
     });
+
+    // If Premium is unchecked, clear any billing selection so nothing is
+    // left pre-ticked behind the scenes.
+    if (!isPremium) {
+      billingMonthly.checked = false;
+      billingYearly.checked = false;
+    }
   }
   wantsPremium.addEventListener("change", syncPremiumFields);
+
+  // ---------- Monthly / Yearly are mutually exclusive ----------
+  billingMonthly.addEventListener("change", () => {
+    if (billingMonthly.checked) billingYearly.checked = false;
+  });
+  billingYearly.addEventListener("change", () => {
+    if (billingYearly.checked) billingMonthly.checked = false;
+  });
+
+  // ---------- Pre-select Premium/billing when arriving from the pricing page ----------
+  // Links look like create-account.html?plan=premium&billing=monthly (or yearly).
+  // Opening this page any other way (nav bar, login page, etc.) leaves
+  // everything unchecked so the person picks for themselves.
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedPlan = urlParams.get("plan");
+  const requestedBilling = urlParams.get("billing");
+
+  if (requestedPlan === "premium") {
+    wantsPremium.checked = true;
+    if (requestedBilling === "yearly") {
+      billingYearly.checked = true;
+      billingMonthly.checked = false;
+    } else {
+      // Default to monthly if plan=premium was passed without a billing value.
+      billingMonthly.checked = true;
+      billingYearly.checked = false;
+    }
+  }
+
   syncPremiumFields();
 
   // ---------- Light input formatting for card fields ----------
