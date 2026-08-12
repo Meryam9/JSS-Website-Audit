@@ -196,3 +196,37 @@ function initTestimonials() {
 }
 
 document.addEventListener("DOMContentLoaded", initTestimonials);
+
+// ---------- Testimonials carousel (program detail pages) ----------
+// Program pages render their reviews as a stack of static .testimonial-card
+// elements inside #reviews (all but the first marked `hidden`), followed by
+// a .testimonial-nav with prev/next arrows. This wires those controls up so
+// only one card shows at a time, matching the homepage carousel.
+function initProgramTestimonialCarousels() {
+  document.querySelectorAll("#reviews").forEach((section) => {
+    const cards = Array.from(section.querySelectorAll(":scope > .testimonial-card"));
+    const nav = section.querySelector(":scope > .testimonial-nav");
+    if (cards.length <= 1 || !nav) return;
+
+    const prevBtn = nav.querySelector("[data-testimonial-prev]");
+    const nextBtn = nav.querySelector("[data-testimonial-next]");
+    const counterEl = nav.querySelector("[data-testimonial-counter]");
+
+    let index = 0;
+
+    function render(i) {
+      index = (i + cards.length) % cards.length;
+      cards.forEach((card, n) => {
+        card.hidden = n !== index;
+      });
+      if (counterEl) counterEl.textContent = `${index + 1} / ${cards.length}`;
+    }
+
+    if (prevBtn) prevBtn.addEventListener("click", () => render(index - 1));
+    if (nextBtn) nextBtn.addEventListener("click", () => render(index + 1));
+
+    render(0);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initProgramTestimonialCarousels);

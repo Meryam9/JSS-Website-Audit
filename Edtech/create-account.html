@@ -17,6 +17,11 @@
       <p>Join thousands of learners building job-ready IT skills.</p>
     </div>
 
+    <div class="plan-banner" id="planBanner">
+      <span class="plan-banner-text" id="planBannerText">Free plan selected</span>
+      <a href="pricing.html" class="btn btn-primary">Change Plan</a>
+    </div>
+
     <form class="auth-form" id="signupForm" novalidate>
 
       <div class="form-grid">
@@ -39,7 +44,13 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye-off" style="display:none;"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.61 3.66M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
             </button>
           </div>
-          <span class="field-error" id="passwordError">Password must be at least 8 characters.</span>
+          <ul class="password-requirements" id="passwordRequirements">
+            <li data-req="length" id="reqLength">8+ characters</li>
+            <li data-req="upper" id="reqUpper">1 uppercase letter</li>
+            <li data-req="number" id="reqNumber">1 number</li>
+            <li data-req="symbol" id="reqSymbol">1 symbol</li>
+          </ul>
+          <span class="field-error" id="passwordError">Password needs 8+ characters, an uppercase letter, a number, and a symbol.</span>
         </div>
 
         <div class="form-field">
@@ -96,24 +107,8 @@
         <span class="field-error" id="referralSourceError">Please select an option.</span>
       </div>
 
-      <label class="premium-toggle-row" for="wantsPremium">
-        <input type="checkbox" id="wantsPremium" name="wantsPremium">
-        <span>
-          <strong>I want Premium Membership </strong>
-          <small>Unlock every certificate program, hands-on labs, and career resources. You can also start free and upgrade later.</small>
-        </span>
-      </label>
-
-      <div class="billing-toggle-group" id="billingToggleGroup" hidden>
-        <label class="billing-toggle-row" for="billingMonthly">
-          <input type="checkbox" id="billingMonthly" name="billingCycle" value="monthly">
-          <span><strong>Monthly</strong><small>$50/month, billed monthly</small></span>
-        </label>
-        <label class="billing-toggle-row" for="billingYearly">
-          <input type="checkbox" id="billingYearly" name="billingCycle" value="yearly">
-          <span><strong>Yearly</strong><small>$549/year — save $51</small></span>
-        </label>
-      </div>
+      <input type="hidden" id="wantsPremium" name="wantsPremium" value="false">
+      <input type="hidden" id="billingCycle" name="billingCycle" value="">
 
       <div class="payment-section" id="paymentSection" hidden>
         <div class="form-section-divider"><span>Payment Information</span></div>
@@ -149,6 +144,7 @@
         <span>I agree to the <a href="https://www.jobskillshare.org/terms/" target="_blank" rel="noopener noreferrer">Terms</a> *</span>
       </label>
       <span class="field-error" id="agreeTermsError" style="margin-top:-16px;">You must agree to the Terms to continue.</span>
+      <div class="form-banner form-banner-error" id="formError" style="display:none;"></div>
 
       <button type="submit" class="btn btn-primary btn-lg auth-submit">Create Account</button>
     </form>
@@ -159,19 +155,61 @@
   </div>
 </section>
 
+<script src="auth.js"></script>
+<script src="partials.js"></script>
 <script src="header-loader.js"></script>
 <script>
 (function () {
   const form = document.getElementById("signupForm");
   const wantsPremium = document.getElementById("wantsPremium");
+  const billingCycle = document.getElementById("billingCycle");
   const paymentSection = document.getElementById("paymentSection");
-  const billingToggleGroup = document.getElementById("billingToggleGroup");
-  const billingMonthly = document.getElementById("billingMonthly");
-  const billingYearly = document.getElementById("billingYearly");
 
   const cardNumber = document.getElementById("cardNumber");
   const cardExpiry = document.getElementById("cardExpiry");
   const cardCvc = document.getElementById("cardCvc");
+
+  const planBanner = document.getElementById("planBanner");
+  const planBannerText = document.getElementById("planBannerText");
+
+  // ---------- Keep the plan banner in sync with the selected plan ----------
+  function updatePlanBanner() {
+    const isPremium = wantsPremium.value === "true";
+    if (!isPremium) {
+      planBanner.classList.remove("is-premium");
+      planBannerText.innerHTML = "You selected <strong>Free Access</strong> — click to change plan";
+      return;
+    }
+    planBanner.classList.add("is-premium");
+    if (billingCycle.value === "yearly") {
+      planBannerText.innerHTML = "<strong>Premium Yearly</strong> — $549/year selected";
+    } else {
+      planBannerText.innerHTML = "<strong>Premium Monthly</strong> — $50/month selected";
+    }
+  }
+
+  // ---------- Live password requirements checklist ----------
+  const passwordInput = document.getElementById("password");
+  const passwordReqs = {
+    length: { test: (v) => v.length >= 8, el: document.getElementById("reqLength") },
+    upper: { test: (v) => /[A-Z]/.test(v), el: document.getElementById("reqUpper") },
+    number: { test: (v) => /[0-9]/.test(v), el: document.getElementById("reqNumber") },
+    symbol: { test: (v) => /[^A-Za-z0-9]/.test(v), el: document.getElementById("reqSymbol") },
+  };
+
+  function isPasswordStrong(value) {
+    return Object.values(passwordReqs).every((req) => req.test(value));
+  }
+
+  function updatePasswordRequirements() {
+    const value = passwordInput.value;
+    Object.values(passwordReqs).forEach((req) => {
+      req.el.classList.toggle("met", req.test(value));
+    });
+  }
+
+  passwordInput.addEventListener("input", updatePasswordRequirements);
+  updatePasswordRequirements();
 
   // ---------- Password show/hide toggles ----------
   document.querySelectorAll(".toggle-password").forEach((btn) => {
@@ -187,11 +225,10 @@
     });
   });
 
-  // ---------- Premium checkbox reveals payment fields + billing choice ----------
-  function syncPremiumFields() {
-    const isPremium = wantsPremium.checked;
+  // ---------- Show/hide the Payment Information section ----------
+  function syncPaymentSection() {
+    const isPremium = wantsPremium.value === "true";
     paymentSection.hidden = !isPremium;
-    billingToggleGroup.hidden = !isPremium;
 
     // Card fields are only required (and only validated) when Premium is selected.
     [cardNumber, cardExpiry, cardCvc].forEach((field) => {
@@ -202,45 +239,27 @@
         field.closest(".form-field").classList.remove("invalid");
       }
     });
-
-    // If Premium is unchecked, clear any billing selection so nothing is
-    // left pre-ticked behind the scenes.
-    if (!isPremium) {
-      billingMonthly.checked = false;
-      billingYearly.checked = false;
-    }
   }
-  wantsPremium.addEventListener("change", syncPremiumFields);
 
-  // ---------- Monthly / Yearly are mutually exclusive ----------
-  billingMonthly.addEventListener("change", () => {
-    if (billingMonthly.checked) billingYearly.checked = false;
-  });
-  billingYearly.addEventListener("change", () => {
-    if (billingYearly.checked) billingMonthly.checked = false;
-  });
-
-  // ---------- Pre-select Premium/billing when arriving from the pricing page ----------
+  // ---------- Read plan/billing straight from the URL ----------
   // Links look like create-account.html?plan=premium&billing=monthly (or yearly).
-  // Opening this page any other way (nav bar, login page, etc.) leaves
-  // everything unchecked so the person picks for themselves.
+  // There's no on-page toggle anymore — the pricing page is the only place the
+  // plan gets chosen; this page just reads it and shows/hides Payment Info.
   const urlParams = new URLSearchParams(window.location.search);
   const requestedPlan = urlParams.get("plan");
   const requestedBilling = urlParams.get("billing");
 
   if (requestedPlan === "premium") {
-    wantsPremium.checked = true;
-    if (requestedBilling === "yearly") {
-      billingYearly.checked = true;
-      billingMonthly.checked = false;
-    } else {
-      // Default to monthly if plan=premium was passed without a billing value.
-      billingMonthly.checked = true;
-      billingYearly.checked = false;
-    }
+    wantsPremium.value = "true";
+    billingCycle.value = requestedBilling === "yearly" ? "yearly" : "monthly";
+  } else {
+    // Free plan: no premium fields, no payment section — nothing to show here.
+    wantsPremium.value = "false";
+    billingCycle.value = "";
   }
 
-  syncPremiumFields();
+  syncPaymentSection();
+  updatePlanBanner();
 
   // ---------- Light input formatting for card fields ----------
   cardNumber.addEventListener("input", () => {
@@ -323,8 +342,8 @@
     // Username: required, min 3 chars.
     if (username.value.trim().length < 3) markInvalid(username);
 
-    // Password: required, min 8 chars.
-    if (password.value.length < 8) markInvalid(password);
+    // Password: required, min 8 chars, must include an uppercase letter, a number, and a symbol.
+    if (!isPasswordStrong(password.value)) markInvalid(password);
 
     // Confirm password: must match.
     if (confirmPassword.value.length === 0 || confirmPassword.value !== password.value) {
@@ -358,7 +377,7 @@
     }
 
     // Payment fields: only validated when Premium is selected.
-    if (wantsPremium.checked) {
+    if (wantsPremium.value === "true") {
       const digitsOnly = cardNumber.value.replace(/\D/g, "");
       if (digitsOnly.length < 13 || digitsOnly.length > 19) markInvalid(cardNumber);
       if (!isValidExpiry(cardExpiry.value.trim())) markInvalid(cardExpiry);
@@ -378,8 +397,35 @@
       return;
     }
 
-    // Hook up real account creation here.
-    alert("Account details look good! (demo only — connect this to your backend).");
+    const usernameEl = document.getElementById("username");
+    const emailEl = document.getElementById("email");
+    const passwordEl = document.getElementById("password");
+    const plan = wantsPremium.value === "true" ? "premium" : "free";
+
+    const result = AuthDemo.registerUser({
+      username: usernameEl.value.trim(),
+      email: emailEl.value.trim(),
+      password: passwordEl.value,
+      plan,
+    });
+
+    if (!result.ok) {
+      const formError = document.getElementById("formError");
+      if (result.reason === "username") {
+        setInvalid(usernameEl, true);
+        formError.textContent = "That username is already taken — try another one.";
+      } else {
+        setInvalid(emailEl, true);
+        formError.textContent = "An account with that email already exists. Try logging in instead.";
+      }
+      formError.style.display = "block";
+      formError.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // Account created and the person is now logged in (see auth.js).
+    // Send them to the homepage, now showing as signed in.
+    window.location.href = "index.html";
   });
 
   // Re-validate a field the moment the person fixes it, so the error
