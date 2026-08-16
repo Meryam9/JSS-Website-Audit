@@ -13,9 +13,9 @@
 // point at sections that don't exist there yet.
 const JUMPNAV_HTML = `<span class="pd-jumpnav-label">Jump to</span>
 <a href="#overview" data-jump="overview">Overview</a>
-<a href="#outcomes" data-jump="outcomes">Outcomes</a>
 <a href="#roadmap" data-jump="roadmap">Roadmap</a>
 <a href="#courses-in-program" data-jump="courses-in-program">Courses</a>
+<a href="#outcomes" data-jump="outcomes">Outcomes</a>
 <a href="#reviews" data-jump="reviews">Reviews</a>`;
 
 const HEADER_HTML = `<header class="site-header">
@@ -34,17 +34,8 @@ const HEADER_HTML = `<header class="site-header">
     </nav>
 
     <div class="header-actions">
-      <a href="login.html" class="login-link" data-page="login.html" id="loggedOutLogin">Login</a>
-      <a href="create-account.html" class="btn btn-primary header-create-account-btn" data-page="create-account.html" id="loggedOutCreate">Create Account</a>
-      <div class="user-chip" id="userChip" style="display:none;">
-        <img class="user-chip-avatar" id="userChipAvatar" src="assets/images/jss-logo.png" alt="">
-        <span class="user-chip-name" id="userChipName"></span>
-        <a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener noreferrer" class="user-chip-referral" id="userChipReferral" title="Share your referral link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line x1="8.6" y1="13.4" x2="15.4" y2="17.6"></line></svg>
-          <span class="user-chip-referral-text">Use Referral Link</span>
-        </a>
-        <button type="button" class="user-chip-logout" id="userChipLogout">Log out</button>
-      </div>
+      <a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener noreferrer" class="login-link" id="loggedOutLogin">Login</a>
+      <a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener noreferrer" class="btn btn-primary header-create-account-btn" id="loggedOutCreate">Create Account</a>
       <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mainNav">
         <span></span><span></span><span></span>
       </button>

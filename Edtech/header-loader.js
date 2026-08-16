@@ -49,27 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Logged-in state: if a demo session exists (see auth.js), swap the
-      // Login/Create Account buttons for a "Hi, {name}" chip with Log out.
-      if (typeof AuthDemo !== "undefined") {
-        const session = AuthDemo.getSession();
-        const loggedOutLogin = root.querySelector("#loggedOutLogin");
-        const loggedOutCreate = root.querySelector("#loggedOutCreate");
-        const userChip = root.querySelector("#userChip");
-        const userChipName = root.querySelector("#userChipName");
-        const userChipLogout = root.querySelector("#userChipLogout");
-
-        if (session && userChip) {
-          if (loggedOutLogin) loggedOutLogin.style.display = "none";
-          if (loggedOutCreate) loggedOutCreate.style.display = "none";
-          userChip.style.display = "flex";
-          if (userChipName) userChipName.textContent = session.username;
-          if (userChipLogout) {
-            userChipLogout.addEventListener("click", () => AuthDemo.logout());
-          }
-        }
-      }
-
       // Mobile hamburger menu: toggles the nav dropdown on small/tablet
       // screens. The button and nav only need this wiring once, right
       // after the header markup lands in the DOM.

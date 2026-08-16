@@ -3080,7 +3080,7 @@ body.programs-page-bg {
 .testimonials-section {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 20px 32px 10px;
+  padding: 20px 0 10px;
 }
 
 .testimonials-head {
@@ -3090,6 +3090,7 @@ body.programs-page-bg {
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 24px;
+  padding: 0 32px;
 }
 
 .testimonials-head h2 {
@@ -3116,6 +3117,12 @@ body.programs-page-bg {
   padding: 54px 40px;
   text-align: center;
   box-shadow: 0 30px 60px rgba(7, 32, 66, 0.2);
+}
+
+#reviews .testimonial-card {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .testimonial-stars {
@@ -4496,29 +4503,33 @@ body.programs-page-bg {
 
 /* ---------- Bottom CTA ---------- */
 .pd-final-cta {
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto 80px;
-  padding: 46px 48px;
+  padding: 54px 48px;
   border-radius: 28px;
-  background: var(--cta-bg);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
   text-align: center;
-  box-shadow: 0 30px 60px rgba(7, 32, 66, 0.2);
+  box-shadow: var(--shadow);
 }
 
 .pd-final-cta h2 {
-  color: #fff;
+  color: var(--navy);
   font-size: 26px;
   margin: 0 0 10px;
 }
 
 .pd-final-cta p {
-  color: #dbe3fb;
+  color: var(--gray-text);
   margin: 0 0 24px;
   font-size: 15px;
 }
 
 .pd-final-cta .catalog-btn-light {
   display: inline-flex;
+  background: var(--cta-navy);
+  color: #fff;
+  box-shadow: 0 16px 30px rgba(27, 42, 77, 0.3);
 }
 
 @media (max-width: 900px) {

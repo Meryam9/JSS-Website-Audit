@@ -108,7 +108,7 @@ function initStepTracker() {
 
   panel.querySelector(".step-next-btn").addEventListener("click", () => {
     if (current === stepData.length - 1) {
-      window.location.href = "login.html";
+      window.open("https://www.jobskillshare.org/?ref=maryam#/membership", "_blank", "noopener,noreferrer");
     } else {
       render(current + 1);
     }
