@@ -5,6 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Individual Courses — EdTech4D</title>
 <link rel="stylesheet" href="styles.css">
+<style>
+/* Course filter navigation — page scoped
+   Does not modify styles.css or affect other pages. */
+
+.courses-search-section .courses-search-wrap{
+  width:100%;
+  max-width:1180px;
+  margin:28px auto 0;
+  padding:0 32px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+
+.courses-search-section .course-filter-intro{
+  width:100%;
+  text-align:center;
+  margin:0;
+}
+
+.courses-search-section .course-filter-intro-eyebrow{
+  display:block;
+  margin:0 0 7px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#4a86ff;
+}
+
+.courses-search-section .course-filter-intro h2{
+  margin:0 0 6px;
+  font-size:25px;
+  line-height:1.25;
+  font-weight:800;
+  color:#14213d;
+}
+
+.courses-search-section .course-filter-intro p{
+  max-width:650px;
+  margin:0 auto;
+  color:#667085;
+  font-size:13.5px;
+  line-height:1.55;
+}
+
+/* The four filter dropdowns sit in one clean row on desktop. */
+.courses-search-section .course-navigation{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:2px auto 0;
+}
+
+/* Each filter is its own positioned dropdown. */
+.courses-search-section .course-filter-dropdown{
+  position:relative;
+  flex:0 0 auto;
+}
+
+.courses-search-section .course-filter-trigger{
+  min-width:150px;
+  min-height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:0 15px;
+  border:1px solid rgba(74,134,255,.18);
+  border-radius:13px;
+  background:#fff;
+  color:#1b2a4d;
+  font:600 13px/1 inherit;
+  box-shadow:0 5px 18px rgba(27,42,77,.08);
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.courses-search-section .course-filter-trigger:hover,
+.courses-search-section .course-filter-dropdown.open .course-filter-trigger{
+  border-color:#4a86ff;
+  box-shadow:0 8px 22px rgba(74,134,255,.16);
+  transform:translateY(-1px);
+}
+
+.courses-search-section .course-filter-dropdown.has-selection .course-filter-trigger{
+  background:#f4f8ff;
+  border-color:#4a86ff;
+  color:#245fc5;
+}
+
+.courses-search-section .filter-selected-count{
+  display:none;
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  box-sizing:border-box;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:#4a86ff;
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+}
+
+.courses-search-section .course-filter-dropdown.has-selection .filter-selected-count{
+  display:inline-flex;
+}
+
+.courses-search-section .filter-chevron{
+  width:16px;
+  height:16px;
+  color:#667085;
+  transition:transform .2s ease;
+}
+
+.courses-search-section .course-filter-dropdown.open .filter-chevron{
+  transform:rotate(180deg);
+}
+
+/* Pretty dropdown panel. */
+.courses-search-section .course-filter-menu{
+  position:absolute;
+  z-index:100;
+  top:calc(100% + 9px);
+  left:50%;
+  width:235px;
+  padding:9px;
+  box-sizing:border-box;
+  border:1px solid rgba(74,134,255,.14);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 18px 45px rgba(27,42,77,.16);
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%,-6px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+}
+
+.courses-search-section .course-filter-dropdown.open .course-filter-menu{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,0);
+}
+
+.courses-search-section .course-filter-menu-title{
+  padding:8px 10px 9px;
+  color:#667085;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.courses-search-section .course-filter-option{
+  width:100%;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:#344054;
+  text-align:left;
+  font:600 13px/1.2 inherit;
+  cursor:pointer;
+  transition:background .15s ease,color .15s ease;
+}
+
+.courses-search-section .course-filter-option:hover{
+  background:#f4f8ff;
+  color:#245fc5;
+}
+
+.courses-search-section .filter-check{
+  width:20px;
+  height:20px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 20px;
+  border:1.5px solid #cbd5e1;
+  border-radius:6px;
+  color:transparent;
+  background:#fff;
+  font-size:12px;
+  font-weight:900;
+  transition:all .15s ease;
+}
+
+.courses-search-section .course-filter-option.is-selected .filter-check{
+  border-color:#4a86ff;
+  background:#4a86ff;
+  color:#fff;
+}
+
+.courses-search-section .course-filter-option.is-selected{
+  background:#f4f8ff;
+  color:#245fc5;
+}
+
+.courses-search-section .filter-option-text{
+  flex:1;
+}
+
+.courses-search-section .filter-menu-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:7px;
+  padding:8px 3px 2px;
+  border-top:1px solid #eef2f7;
+}
+
+.courses-search-section .filter-clear-btn,
+.courses-search-section .filter-done-btn{
+  border:0;
+  border-radius:9px;
+  padding:8px 13px;
+  font:700 11.5px/1 inherit;
+  cursor:pointer;
+}
+
+.courses-search-section .filter-clear-btn{
+  background:#f3f5f8;
+  color:#667085;
+}
+
+.courses-search-section .filter-done-btn{
+  background:#1b2a4d;
+  color:#fff;
+}
+
+.courses-search-section .filter-clear-btn:hover{
+  background:#e9edf3;
+}
+
+.courses-search-section .filter-done-btn:hover{
+  filter:brightness(1.12);
+}
+
+/* Selected filters appear as removable pills, like the reference design. */
+.courses-search-section .filter-active-summary{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  min-height:0;
+  margin:0 auto;
+}
+
+.courses-search-section .filter-summary-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 9px 6px 11px;
+  border:1px solid #bfe7f5;
+  border-radius:999px;
+  background:#f3fbfe;
+  color:#29b6d9;
+  font-size:11.5px;
+  font-weight:700;
+}
+
+.courses-search-section .filter-summary-remove{
+  width:17px;
+  height:17px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(41,182,217,.12);
+  color:#1599b9;
+  font:700 13px/17px inherit;
+  cursor:pointer;
+}
+
+.courses-search-section .filter-summary-remove:hover{
+  background:#29b6d9;
+  color:#fff;
+}
+
+.courses-search-section .filter-clear-all{
+  display:none;
+  border:0;
+  background:transparent;
+  color:#667085;
+  font:700 11.5px/1 inherit;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.courses-search-section .filter-clear-all.visible{
+  display:inline-block;
+}
+
+.courses-search-section .course-count-pill{
+  margin:1px auto 0;
+  padding:8px 15px;
+  border-radius:999px;
+  background:#f5f8fc;
+  color:#1b2a4d;
+  font-size:12px;
+  font-weight:800;
+}
+
+/* Mobile: dropdowns stay easy to tap and the menu remains inside the viewport. */
+@media (max-width:760px){
+  .courses-search-section .courses-search-wrap{
+    margin-top:18px;
+    padding:0 18px;
+    gap:15px;
+  }
+
+  .courses-search-section .course-filter-intro h2{
+    font-size:21px;
+  }
+
+  .courses-search-section .course-filter-intro p{
+    font-size:12.5px;
+  }
+
+  .courses-search-section .course-navigation{
+    gap:9px;
+  }
+
+  .courses-search-section .course-filter-trigger{
+    min-width:142px;
+    min-height:44px;
+  }
+}
+
+@media (max-width:500px){
+  .courses-search-section .course-navigation{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+
+  .courses-search-section .course-filter-dropdown{
+    width:100%;
+  }
+
+  .courses-search-section .course-filter-trigger{
+    width:100%;
+    min-width:0;
+  }
+
+  .courses-search-section .course-filter-menu{
+    width:min(235px,calc(100vw - 36px));
+  }
+}
+
+@media (max-width:360px){
+  .courses-search-section .courses-search-wrap{
+    padding:0 12px;
+  }
+
+  .courses-search-section .course-navigation{
+    grid-template-columns:1fr;
+  }
+
+  .courses-search-section .course-filter-menu{
+    left:50%;
+  }
+}
+</style>
 </head>
 <body class="programs-page-bg">
 
@@ -51,12 +428,96 @@
 
 <section class="courses-search-section">
   <div class="courses-search-wrap">
-    <div class="courses-search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="courseSearch" placeholder="Search by course, skill, or technology">
+    <div class="course-filter-intro">
+      <span class="course-filter-intro-eyebrow">FIND YOUR COURSE</span>
+      <h2>Filter by Track, Level &amp; Delivery</h2>
+      <p>Choose one or more options below to find the courses that match your learning goals.</p>
     </div>
-    <div class="course-filter-group" role="group" aria-label="Filter courses">
-      <button type="button" class="btn course-filter-btn" data-filter="free">Free Courses</button>
+    <div class="course-navigation" aria-label="Course navigation and filters">
+
+      <div class="course-filter-dropdown" data-filter-type="track">
+        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+          <span>Track</span>
+          <span class="filter-selected-count" aria-hidden="true">0</span>
+          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="course-filter-menu">
+          <div class="course-filter-menu-title">Choose track</div>
+          <button type="button" class="course-filter-option" data-value="it-support"><span class="filter-check">✓</span><span class="filter-option-text">IT Support</span></button>
+          <button type="button" class="course-filter-option" data-value="cloud"><span class="filter-check">✓</span><span class="filter-option-text">Cloud</span></button>
+          <button type="button" class="course-filter-option" data-value="cybersecurity"><span class="filter-check">✓</span><span class="filter-option-text">CyberSecurity</span></button>
+          <button type="button" class="course-filter-option" data-value="ai"><span class="filter-check">✓</span><span class="filter-option-text">AI</span></button>
+          <button type="button" class="course-filter-option" data-value="networking"><span class="filter-check">✓</span><span class="filter-option-text">Networking</span></button>
+          <button type="button" class="course-filter-option" data-value="freelancing"><span class="filter-check">✓</span><span class="filter-option-text">Freelancing</span></button>
+          <div class="filter-menu-footer">
+            <button type="button" class="filter-clear-btn">Clear</button>
+            <button type="button" class="filter-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-filter-dropdown" data-filter-type="level">
+        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+          <span>Level</span>
+          <span class="filter-selected-count" aria-hidden="true">0</span>
+          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="course-filter-menu">
+          <div class="course-filter-menu-title">Choose level</div>
+          <button type="button" class="course-filter-option" data-value="beginner"><span class="filter-check">✓</span><span class="filter-option-text">Beginner</span></button>
+          <button type="button" class="course-filter-option" data-value="intermediate"><span class="filter-check">✓</span><span class="filter-option-text">Intermediate</span></button>
+          <button type="button" class="course-filter-option" data-value="advanced"><span class="filter-check">✓</span><span class="filter-option-text">Advanced</span></button>
+          <div class="filter-menu-footer">
+            <button type="button" class="filter-clear-btn">Clear</button>
+            <button type="button" class="filter-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-filter-dropdown" data-filter-type="delivery">
+        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+          <span>Delivery</span>
+          <span class="filter-selected-count" aria-hidden="true">0</span>
+          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="course-filter-menu">
+          <div class="course-filter-menu-title">Choose delivery</div>
+          <button type="button" class="course-filter-option" data-value="self-paced"><span class="filter-check">✓</span><span class="filter-option-text">Self-Paced</span></button>
+          <div class="filter-menu-footer">
+            <button type="button" class="filter-clear-btn">Clear</button>
+            <button type="button" class="filter-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-filter-dropdown" data-filter-type="type">
+        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+          <span>Course Type</span>
+          <span class="filter-selected-count" aria-hidden="true">0</span>
+          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="course-filter-menu">
+          <div class="course-filter-menu-title">Choose course type</div>
+          <button type="button" class="course-filter-option" data-value="free"><span class="filter-check">✓</span><span class="filter-option-text">Free Courses</span></button>
+          <div class="filter-menu-footer">
+            <button type="button" class="filter-clear-btn">Clear</button>
+            <button type="button" class="filter-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="filter-active-summary" id="filterActiveSummary" aria-live="polite">
+      <button type="button" class="filter-clear-all" id="filterClearAll">Clear all</button>
     </div>
     <span class="course-count-pill" id="courseCount">29 Courses</span>
   </div>
@@ -64,7 +525,7 @@
 
 <section class="courses-grid" id="coursesGrid">
 
-  <article class="course-card" data-name="Advance IT Support - Modern Desktop Administrator">
+  <article class="course-card" data-name="Advance IT Support - Modern Desktop Administrator" data-track="it-support" data-level="advanced" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
       <span class="badge course-badge-free">Free Course</span>
@@ -84,7 +545,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="AI for IT Professionals - Knowledge Sharing">
+  <article class="course-card" data-name="AI for IT Professionals - Knowledge Sharing" data-track="ai" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"></rect><circle cx="8.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle><circle cx="15.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg></div>
     </div>
@@ -104,7 +565,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Cybersecurity Technical Skills by an Expert">
+  <article class="course-card" data-name="Cybersecurity Technical Skills by an Expert" data-track="cybersecurity" data-level="advanced" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
     </div>
@@ -124,7 +585,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Cloud Administrator - Basics">
+  <article class="course-card" data-name="Cloud Administrator - Basics" data-track="cloud" data-level="beginner" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
       <span class="badge course-badge-free">Free Course</span>
@@ -145,7 +606,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="AWS Cloud Administrator - Fundamentals">
+  <article class="course-card" data-name="AWS Cloud Administrator - Fundamentals" data-track="cloud" data-level="beginner" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
     </div>
@@ -164,7 +625,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="AWS Cloud Administrator Course - Advance">
+  <article class="course-card" data-name="AWS Cloud Administrator Course - Advance" data-track="cloud" data-level="advanced" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
     </div>
@@ -183,7 +644,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="AWS DevOps Engineer Certificate">
+  <article class="course-card" data-name="AWS DevOps Engineer Certificate" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
     </div>
@@ -202,7 +663,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Azure DevOps: Real-World Case Studies">
+  <article class="course-card" data-name="Azure DevOps: Real-World Case Studies" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="6" rx="1.5"></rect><rect x="4" y="15" width="16" height="6" rx="1.5"></rect></svg></div>
     </div>
@@ -221,7 +682,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Cisco CCNA (200-301) Networking Skills">
+  <article class="course-card" data-name="Cisco CCNA (200-301) Networking Skills" data-track="networking" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
     </div>
@@ -240,7 +701,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Cisco Core Networking - Packet Tracer">
+  <article class="course-card" data-name="Cisco Core Networking - Packet Tracer" data-track="networking" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
     </div>
@@ -260,7 +721,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="CompTIA Linux+ (XK0-005)">
+  <article class="course-card" data-name="CompTIA Linux+ (XK0-005)" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
     </div>
@@ -279,7 +740,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 1">
+  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 1" data-track="cybersecurity" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
     </div>
@@ -298,7 +759,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 2">
+  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 2" data-track="cybersecurity" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
     </div>
@@ -317,7 +778,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Freelancing - Sell Your Skills and Make Money Online">
+  <article class="course-card" data-name="Freelancing - Sell Your Skills and Make Money Online" data-track="freelancing" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
     </div>
@@ -337,7 +798,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="IT Support Resume, Applying for Jobs and Communities">
+  <article class="course-card" data-name="IT Support Resume, Applying for Jobs and Communities" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
       <span class="badge course-badge-free">Free Course</span>
@@ -358,7 +819,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="IT Support: Active Directory and Tech Skills">
+  <article class="course-card" data-name="IT Support: Active Directory and Tech Skills" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
       <span class="badge course-badge-free">Free Course</span>
@@ -378,7 +839,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="IT Support: People Skills for IT Professionals">
+  <article class="course-card" data-name="IT Support: People Skills for IT Professionals" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
       <span class="badge course-badge-free">Free Course</span>
@@ -399,7 +860,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Microsoft 365 for IT Professionals">
+  <article class="course-card" data-name="Microsoft 365 for IT Professionals" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7 10-7"></path></svg></div>
     </div>
@@ -418,7 +879,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Microsoft Azure Administrator Training (AZ-104)">
+  <article class="course-card" data-name="Microsoft Azure Administrator Training (AZ-104)" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
     </div>
@@ -437,7 +898,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Microsoft Endpoint Manager Training">
+  <article class="course-card" data-name="Microsoft Endpoint Manager Training" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
     </div>
@@ -457,7 +918,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Microsoft Exchange Online - Administrator">
+  <article class="course-card" data-name="Microsoft Exchange Online - Administrator" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7 10-7"></path></svg></div>
     </div>
@@ -476,7 +937,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Modern IT Support Training: 220-1201 (Core 1)">
+  <article class="course-card" data-name="Modern IT Support Training: 220-1201 (Core 1)" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
     </div>
@@ -496,7 +957,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Modern IT Support Training: 220-1202 (Core 2)">
+  <article class="course-card" data-name="Modern IT Support Training: 220-1202 (Core 2)" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
     </div>
@@ -515,7 +976,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Power BI Fundamentals Certificate">
+  <article class="course-card" data-name="Power BI Fundamentals Certificate" data-track="it-support" data-level="beginner" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg></div>
     </div>
@@ -534,7 +995,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Powershell Basics & Skills">
+  <article class="course-card" data-name="Powershell Basics & Skills" data-track="it-support" data-level="beginner" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
     </div>
@@ -554,7 +1015,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Python Fundamentals for Data Science Beginners">
+  <article class="course-card" data-name="Python Fundamentals for Data Science Beginners" data-track="it-support" data-level="beginner" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
     </div>
@@ -574,7 +1035,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="The Complete Freelance Playbook (Advanced Edition)">
+  <article class="course-card" data-name="The Complete Freelance Playbook (Advanced Edition)" data-track="freelancing" data-level="advanced" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
     </div>
@@ -593,7 +1054,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Windows 11 for IT Support Professionals">
+  <article class="course-card" data-name="Windows 11 for IT Support Professionals" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
     </div>
@@ -613,7 +1074,7 @@
     </a>
   </article>
 
-  <article class="course-card" data-name="Windows Server Administrator - Certificate">
+  <article class="course-card" data-name="Windows Server Administrator - Certificate" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
     <div class="course-card-top">
       <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M2 9h20"></path></svg></div>
     </div>
@@ -643,49 +1104,230 @@
 <script src="script.js"></script>
 <script src="footer-loader.js"></script>
 <script>
-  const searchInput = document.getElementById('courseSearch');
-  const cards = Array.from(document.querySelectorAll('.course-card'));
+const cards = Array.from(document.querySelectorAll('.course-card'));
   const countPill = document.getElementById('courseCount');
   const noResults = document.getElementById('noResults');
-  const filterBtns = Array.from(document.querySelectorAll('.course-filter-btn'));
-  let activeFilter = 'all';
+  const dropdowns = Array.from(document.querySelectorAll('.course-filter-dropdown'));
+  const activeSummary = document.getElementById('filterActiveSummary');
+  const clearAllBtn = document.getElementById('filterClearAll');
 
-  // Build a searchable text blob per card up front: course NAME only. The
-  // search bar should only ever match against the course title - not tags,
-  // description, or any other boilerplate copy on the card.
+  // Each filter is an array so users can choose one OR multiple values.
+  // Clicking an already-selected option removes it.
+  const activeFilters = {
+    track: [],
+    level: [],
+    delivery: [],
+    type: []
+  };
+
+  const labels = {
+    track: {
+      'it-support': 'IT Support',
+      cloud: 'Cloud',
+      cybersecurity: 'CyberSecurity',
+      ai: 'AI',
+      networking: 'Networking',
+      freelancing: 'Freelancing'
+    },
+    level: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    },
+    delivery: {
+      'self-paced': 'Self-Paced'
+    },
+    type: {
+      free: 'Free Courses'
+    }
+  };
+
   cards.forEach(card => {
     const title = card.dataset.name || card.querySelector('h3')?.textContent || '';
     card.dataset.search = title.toLowerCase();
   });
 
   function applyFilters() {
-    // Split the query into words so a multi-word search like "windows server"
-    // matches as long as every word appears somewhere in the course name -
-    // it doesn't have to be one exact contiguous phrase.
-    const terms = searchInput.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    let visible = 0;
+let visible = 0;
+
     cards.forEach(card => {
-      const haystack = card.dataset.search;
-      const matchesSearch = terms.every(term => haystack.includes(term));
-      const matchesFilter = activeFilter === 'all' || (activeFilter === 'free' && card.querySelector('.course-badge-free'));
-      const match = matchesSearch && matchesFilter;
+      const matchesSearch = true;
+     // Multiple values inside one filter = OR.
+      // Different filter categories = AND.
+      // Track filters are based ONLY on words in the course title.
+      // This means selecting "Cloud" will not show an unrelated course just
+      // because it was previously assigned to the Cloud category.
+      const trackTitleTerms = {
+        'it-support': ['it support'],
+        'cloud': ['cloud'],
+        'cybersecurity': ['cybersecurity', 'cyber security'],
+        'ai': ['ai', 'artificial intelligence'],
+        'networking': ['networking'],
+        'freelancing': ['freelance', 'freelancing']
+      };
+
+      const matchesTrack =
+        activeFilters.track.length === 0 ||
+        activeFilters.track.some(track => {
+          const termsForTrack = trackTitleTerms[track] || [];
+          return termsForTrack.some(term => {
+            const pattern = new RegExp('(^|\\W)' + term.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&') + '(?=\\W|$)', 'i');
+            return pattern.test(card.dataset.name || '');
+          });
+        });
+
+      const matchesLevel =
+        activeFilters.level.length === 0 || activeFilters.level.includes(card.dataset.level);
+
+      const matchesDelivery =
+        activeFilters.delivery.length === 0 || activeFilters.delivery.includes(card.dataset.delivery);
+
+      const matchesType =
+        activeFilters.type.length === 0 ||
+        (activeFilters.type.includes('free') && !!card.querySelector('.course-badge-free'));
+
+      const match = matchesSearch && matchesTrack && matchesLevel && matchesDelivery && matchesType;
+
       card.style.display = match ? '' : 'none';
       if (match) visible++;
     });
+
     countPill.textContent = visible + (visible === 1 ? ' Course' : ' Courses');
     noResults.style.display = visible === 0 ? 'block' : 'none';
+    renderFilterState();
+    renderActiveSummary();
   }
 
-  searchInput.addEventListener('input', applyFilters);
+  function updateDropdown(type) {
+    const dropdown = document.querySelector('.course-filter-dropdown[data-filter-type="' + type + '"]');
+    if (!dropdown) return;
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeFilter = btn.dataset.filter;
-      filterBtns.forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+    const selected = activeFilters[type];
+    const options = Array.from(dropdown.querySelectorAll('.course-filter-option'));
+    const count = dropdown.querySelector('.filter-selected-count');
+
+    options.forEach(option => {
+      const isSelected = selected.includes(option.dataset.value);
+      option.classList.toggle('is-selected', isSelected);
+      option.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    count.textContent = selected.length;
+    dropdown.classList.toggle('has-selection', selected.length > 0);
+  }
+
+  function renderFilterState() {
+    Object.keys(activeFilters).forEach(updateDropdown);
+  }
+
+  function renderActiveSummary() {
+    activeSummary.querySelectorAll('.filter-summary-chip').forEach(chip => chip.remove());
+
+    let hasFilters = false;
+
+    Object.entries(activeFilters).forEach(([type, values]) => {
+      values.forEach(value => {
+        hasFilters = true;
+
+        const chip = document.createElement('span');
+        chip.className = 'filter-summary-chip';
+        chip.innerHTML =
+          '<span>' + labels[type][value] + '</span>' +
+          '<button type="button" class="filter-summary-remove" aria-label="Remove ' +
+          labels[type][value] + ' filter" data-remove-type="' + type +
+          '" data-remove-value="' + value + '">×</button>';
+
+        activeSummary.insertBefore(chip, clearAllBtn);
+      });
+    });
+
+    clearAllBtn.classList.toggle('visible', hasFilters);
+  }
+
+  dropdowns.forEach(dropdown => {
+    const type = dropdown.dataset.filterType;
+    const trigger = dropdown.querySelector('.course-filter-trigger');
+    const doneBtn = dropdown.querySelector('.filter-done-btn');
+    const clearBtn = dropdown.querySelector('.filter-clear-btn');
+
+    trigger.addEventListener('click', event => {
+      event.stopPropagation();
+
+      dropdowns.forEach(other => {
+        if (other !== dropdown) {
+          other.classList.remove('open');
+          other.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      const isOpen = dropdown.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    dropdown.querySelectorAll('.course-filter-option').forEach(option => {
+      option.addEventListener('click', event => {
+        event.stopPropagation();
+
+        const value = option.dataset.value;
+        const index = activeFilters[type].indexOf(value);
+
+        if (index === -1) {
+          activeFilters[type].push(value);
+        } else {
+          // Selecting an option again UNSELECTS it.
+          activeFilters[type].splice(index, 1);
+        }
+
+        applyFilters();
+      });
+    });
+
+    clearBtn.addEventListener('click', event => {
+      event.stopPropagation();
+      activeFilters[type] = [];
       applyFilters();
     });
+
+    doneBtn.addEventListener('click', event => {
+      event.stopPropagation();
+      dropdown.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
   });
+
+  clearAllBtn.addEventListener('click', () => {
+    Object.keys(activeFilters).forEach(type => {
+      activeFilters[type] = [];
+    });
+    applyFilters();
+  });
+
+  activeSummary.addEventListener('click', event => {
+    const remove = event.target.closest('.filter-summary-remove');
+    if (!remove) return;
+
+    const type = remove.dataset.removeType;
+    const value = remove.dataset.removeValue;
+    const index = activeFilters[type].indexOf(value);
+
+    if (index !== -1) {
+      activeFilters[type].splice(index, 1);
+    }
+
+    applyFilters();
+  });
+document.addEventListener('click', event => {
+    if (!event.target.closest('.course-filter-dropdown')) {
+      dropdowns.forEach(dropdown => {
+        dropdown.classList.remove('open');
+        dropdown.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  renderFilterState();
+  renderActiveSummary();
+  applyFilters();
 </script>
 </body>
 </html>
