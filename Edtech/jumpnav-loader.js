@@ -66,6 +66,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sections.forEach((section) => observer.observe(section));
 
+    // On mobile, stop showing the sticky jump bar once the footer has
+    // scrolled into view so it doesn't float on top of footer content.
+    const watchFooterAndHideJumpnav = () => {
+      const footer = document.querySelector(".site-footer");
+      if (!footer) {
+        // Footer partial may not be injected yet - try again shortly.
+        setTimeout(watchFooterAndHideJumpnav, 150);
+        return;
+      }
+
+      const footerObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            placeholder.classList.toggle("pd-jumpnav--hide", entry.isIntersecting);
+          });
+        },
+        { threshold: 0, rootMargin: "0px" }
+      );
+      footerObserver.observe(footer);
+    };
+    watchFooterAndHideJumpnav();
+
     // Smooth-scroll on click, accounting for the sticky offset so the
     // section heading doesn't end up hidden behind the bars.
     links.forEach((link) => {

@@ -155,6 +155,9 @@ button { font-family: inherit; cursor: pointer; }
 .header-create-account-btn {
   padding: 9px 18px;
   font-size: 14px;
+  white-space: nowrap;
+  justify-content: center;
+  text-align: center;
 }
 
 .user-chip {
@@ -929,7 +932,7 @@ body.programs-page-bg {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
-  padding: 30px 32px 90px;
+  padding: 30px 32px 44px;
   max-width: 1180px;
   margin: 0 auto;
 }
@@ -1136,6 +1139,16 @@ body.programs-page-bg {
 .stat-box strong { display: block; font-size: 12.5px; color: var(--navy); }
 .stat-box span { color: var(--gray-text); }
 
+.course-card .card-stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.course-card .card-stats .stat-box {
+  flex: 0 1 140px;
+}
+
 .program-card .tags,
 .course-card .tags {
   font-size: 12.5px;
@@ -1271,9 +1284,9 @@ body.programs-page-bg {
 
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
-  padding: 30px 32px 90px;
+  padding: 30px 32px 44px;
   max-width: 1180px;
   margin: 0 auto;
 }
@@ -1289,6 +1302,7 @@ body.programs-page-bg {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+  min-width: 0;
 }
 
 .course-card:hover {
@@ -1332,12 +1346,55 @@ body.programs-page-bg {
 }
 
 @media (max-width: 980px) {
-  .courses-grid { grid-template-columns: repeat(2, 1fr); }
+  .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 640px) {
-  .courses-grid { grid-template-columns: 1fr; padding-left: 18px; padding-right: 18px; }
-  .card-stats { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: minmax(0, 1fr); padding-left: 18px; padding-right: 18px; }
+  .card-stats { grid-template-columns: minmax(0, 1fr); }
+
+  /* Bring course cards in line with the compact treatment program cards
+     already get on mobile: tighter padding, smaller heading/description,
+     and stat boxes that lose their icon and shrink instead of staying
+     full-size and stacking tall. */
+  .course-card { padding: 16px; }
+  .course-card-top { margin-bottom: 8px; }
+
+  .course-card h3 {
+    font-size: 15px;
+    min-height: 0;
+    margin: 2px 0 6px;
+    -webkit-line-clamp: 2;
+  }
+
+  .course-card .card-desc {
+    font-size: 12px;
+    min-height: 0;
+    margin: 0 0 10px;
+    -webkit-line-clamp: 2;
+  }
+
+  .course-card .card-stats { gap: 6px; margin-bottom: 10px; }
+
+  .course-card .card-stats .stat-box {
+    flex: 1 1 30%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 7px 6px;
+    font-size: 9.5px;
+  }
+
+  .course-card .card-stats .stat-box svg { display: none; }
+  .course-card .card-stats .stat-box strong { font-size: 12px; }
+}
+
+@media (max-width: 400px) {
+  /* Long tag labels (e.g. "Upgrading & Configuring Windows updates") can't
+     shrink below their nowrap min-content width, which on very narrow
+     phones (~320-380px) forced the whole card - and the page - wider than
+     the viewport. Let tags wrap onto a second line here instead. */
+  .tag-pill { white-space: normal; }
 }
 
 /* ---------- Auth (Login) ---------- */
@@ -3080,7 +3137,7 @@ body.programs-page-bg {
 .testimonials-section {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 20px 0 10px;
+  padding: 20px 32px 10px;
 }
 
 .testimonials-head {
@@ -3090,7 +3147,6 @@ body.programs-page-bg {
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 24px;
-  padding: 0 32px;
 }
 
 .testimonials-head h2 {
@@ -3222,7 +3278,7 @@ body.programs-page-bg {
 .final-cta-section {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 30px 32px 70px;
+  padding: 30px 32px 44px;
   text-align: center;
 }
 
@@ -3264,6 +3320,24 @@ body.programs-page-bg {
 
 @media (max-width: 600px) {
   .testimonials-head { flex-direction: column; align-items: flex-start; }
+
+  /* Keep every homepage "module" section flush with the same side
+     gutters on phones so cards line up edge-to-edge with one another
+     instead of some sections (testimonials, premium features, discord,
+     final CTA) sitting further inset than the hero / how-it-works. */
+  .premium-features-section,
+  .discord-section,
+  .testimonials-section,
+  .final-cta-section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-card { padding: 32px 20px; border-radius: 22px; }
+  .testimonial-quote { font-size: 19px; margin-bottom: 24px; }
+  .testimonial-person { padding: 6px 16px 6px 6px; }
 }
 
 .btn-dark {
@@ -3279,7 +3353,7 @@ body.programs-page-bg {
     radial-gradient(circle at 100% 0%, rgba(74, 134, 255, 0.14), transparent 30%),
     radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.12), transparent 24%),
     var(--bg-grad);
-  padding: 80px 32px 90px;
+  padding: 80px 32px 44px;
   text-align: center;
 }
 
@@ -3608,6 +3682,28 @@ body.programs-page-bg {
   .membership-hero h1 { font-size: 30px; }
   .price-amount { font-size: 34px; }
 }
+
+/* Header-only tightening starts a little earlier (400px) than the other
+   380px tweaks above, since the header row is the first thing to run out
+   of room and start forcing horizontal scroll. */
+@media (max-width: 400px) {
+  .header-actions { gap: 8px; }
+  .header-create-account-btn { padding: 7px 11px; font-size: 12px; }
+  .login-link { font-size: 13px; }
+}
+
+/* Very narrow phones (iPhone SE, small Android): the header row (logo +
+   login + create-account pill + hamburger) needs every pixel it can get
+   so nothing pushes the page into horizontal scroll. */
+@media (max-width: 360px) {
+  .header-inner { padding: 10px 12px; }
+  .logo-img { width: 96px; height: 24px; }
+  .header-actions { gap: 6px; }
+  .login-link { font-size: 11.5px; }
+  .header-create-account-btn { padding: 6px 9px; font-size: 10.5px; }
+  .nav-toggle { width: 32px; height: 32px; gap: 4px; }
+  .nav-toggle span { width: 18px; }
+}
 /* ============================================================
    Program Detail Pages (e.g. IT Support Certificate Program)
    ============================================================ */
@@ -3629,6 +3725,18 @@ body.programs-page-bg {
   box-shadow: var(--shadow);
   overflow-x: auto;
   scrollbar-width: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* On phones, once the footer scrolls into view the sticky jump bar is
+   toggled off (see jumpnav-loader.js) so it stops floating over the
+   footer content. */
+@media (max-width: 768px) {
+  .pd-jumpnav.pd-jumpnav--hide {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
+  }
 }
 
 .pd-jumpnav::-webkit-scrollbar { display: none; }
@@ -3923,6 +4031,23 @@ body.programs-page-bg {
   padding-top: 8px;
 }
 
+/* ---------- Tighter section-to-section spacing (Overview -> Skills -> Roadmap ->
+   Outcomes) on tablet/desktop/PC only. Mobile keeps its own spacing below via the
+   existing max-width overrides on .pd-section / .pd-tight-top. ---------- */
+@media (min-width: 561px) {
+  #overview,
+  #skills,
+  #roadmap {
+    padding-bottom: 16px;
+  }
+
+  #skills,
+  #roadmap,
+  #outcomes {
+    padding-top: 16px;
+  }
+}
+
 /* ---------- Learning Roadmap ---------- */
 .pd-roadmap-card {
   background: var(--surface-strong);
@@ -4202,6 +4327,11 @@ body.programs-page-bg {
   border-radius: 28px;
   padding: 36px;
   box-shadow: var(--shadow);
+}
+
+.pd-outcomes-card p {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 /* ---------- Outcomes checklist ---------- */
@@ -4532,6 +4662,106 @@ body.programs-page-bg {
   box-shadow: 0 16px 30px rgba(27, 42, 77, 0.3);
 }
 
+/* ---------- Featured Bonus Course (Spotlight) ---------- */
+.pd-spotlight-banner {
+  border-radius: 28px;
+  padding: 36px 40px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background: radial-gradient(circle at 18% 110%, rgba(139, 92, 246, 0.35), transparent 55%),
+              radial-gradient(circle at 85% -10%, rgba(74, 134, 255, 0.35), transparent 50%),
+              linear-gradient(180deg, #0d1630 0%, #16233d 100%);
+  box-shadow: 0 30px 60px rgba(7, 32, 66, 0.28);
+  color: #fff;
+}
+
+.pd-spotlight-banner-text { flex: 1; min-width: 0; }
+
+.pd-spotlight-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9db8ff;
+  margin-bottom: 12px;
+}
+
+.pd-spotlight-banner-text h2 { font-size: 30px; color: #fff; margin: 0 0 12px; line-height: 1.2; }
+.pd-spotlight-banner-text p { font-size: 14.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.78); margin: 0 0 20px; max-width: 560px; }
+
+.pd-spotlight-stats { display: flex; flex-wrap: wrap; gap: 10px; }
+.pd-spotlight-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+}
+
+.pd-spotlight-banner-media { position: relative; flex-shrink: 0; width: 260px; }
+.pd-spotlight-banner-media img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+.pd-spotlight-banner-logo {
+  position: absolute;
+  left: 14px;
+  bottom: -16px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.pd-spotlight-banner-logo img { width: 24px; height: 24px; object-fit: contain; }
+.pd-spotlight-banner-logo span { font-size: 11px; font-weight: 600; color: var(--navy); line-height: 1.2; }
+
+.pd-spotlight-grid { align-items: flex-start; }
+
+.pd-spotlight-main {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.pd-spotlight-main h3 { font-size: 18px; color: var(--navy); margin: 26px 0 10px; }
+.pd-spotlight-main h3:first-of-type { margin-top: 0; }
+.pd-spotlight-main p { font-size: 14.5px; line-height: 1.7; color: var(--gray-text); margin: 0 0 14px; }
+.pd-spotlight-main .pd-outcomes-grid { margin-top: 6px; }
+
+.pd-spotlight-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 130px; /* clears the fixed header + sticky jumpnav */
+  align-self: flex-start;
+}
+
+.pd-spotlight-cta h3 { font-size: 19px; color: var(--navy); margin: 0 0 8px; }
+.pd-spotlight-cta p { font-size: 13.5px; color: var(--gray-text); line-height: 1.55; margin: 0 0 18px; }
+.pd-spotlight-cta .btn { width: 100%; justify-content: center; margin-bottom: 10px; }
+.pd-spotlight-cta .btn:last-child { margin-bottom: 0; }
+
+.pd-side-card h3 { font-size: 16px; color: var(--navy); margin: 0 0 14px; }
+.pd-check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pd-check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--gray-text); line-height: 1.5; }
+.pd-check-list li svg { flex-shrink: 0; margin-top: 2px; color: var(--green); }
+
 @media (max-width: 900px) {
   .pd-hero-inner { grid-template-columns: 1fr; gap: 18px; }
   .pd-hero { margin: 20px 16px 0; width: auto; padding: 30px 22px 34px; }
@@ -4541,11 +4771,15 @@ body.programs-page-bg {
   .pd-overview-grid { grid-template-columns: 1fr; }
   .pd-overview-media { order: -1; }
   .pd-outcomes-career-grid { grid-template-columns: 1fr; }
+  .pd-spotlight-sidebar { position: static; max-height: none; overflow-y: visible; }
   .pd-outcomes-card { padding: 26px; }
   .pd-outcomes-grid { grid-template-columns: 1fr; }
   .pd-skills-grid { grid-template-columns: 1fr; }
   .pd-tech-stack { flex-direction: column; align-items: flex-start; }
   .pd-tech-pills { justify-content: flex-start; }
+  .pd-spotlight-banner { flex-direction: column; align-items: flex-start; }
+  .pd-spotlight-banner-media { width: 100%; }
+  .pd-spotlight-banner-media img { height: 180px; }
 }
 
 @media (max-width: 560px) {
@@ -4567,13 +4801,16 @@ body.programs-page-bg {
     flex: 1 1 0;
     min-width: 0;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 2px;
     padding: 8px 7px;
   }
   .pd-stat-box svg { display: none; }
-  .pd-stat-box strong { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pd-stat-box span { font-size: 8.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pd-stat-box strong { width: 100%; font-size: 13px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pd-stat-box span { width: 100%; font-size: 8.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pd-stat-box strong .pd-stat-min { display: none; }
 
   .pd-skills-section-head { flex-direction: column; }
   .pd-section { padding: 32px 20px; }
@@ -4581,6 +4818,9 @@ body.programs-page-bg {
   .pd-career-card { padding: 26px 20px 22px; }
   .pd-final-cta { padding: 28px 22px; margin: 0 14px 28px; border-radius: 20px; }
   .pd-final-cta .catalog-btn-light { padding: 9px 18px; font-size: 13px; }
+  .pd-spotlight-banner { padding: 26px 22px; }
+  .pd-spotlight-banner-text h2 { font-size: 23px; }
+  .pd-spotlight-kicker { flex-wrap: wrap; }
 }
 
 @media (max-width: 480px) {
@@ -4606,6 +4846,7 @@ body.programs-page-bg {
   .pd-final-cta h2 { font-size: 20px; }
   .pd-final-cta p { font-size: 14px; }
   .pd-final-cta .catalog-btn-light { padding: 8px 16px; font-size: 12.5px; }
+  .pd-spotlight-banner { border-radius: 20px; padding: 22px 18px; }
 }
 
 @media (max-width: 360px) {
