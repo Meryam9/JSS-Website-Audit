@@ -2960,7 +2960,45 @@ body.programs-page-bg {
   margin: 0;
 }
 
-.pf-cta-row { text-align: center; }
+.pf-cta-row { text-align: center; margin-top: 28px; }
+
+/* ---------- Programs & Courses preview (homepage) ---------- */
+.home-programs-section,
+.home-courses-section {
+  padding: 14px 32px 20px;
+}
+
+.home-section-card {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 44px 48px;
+}
+
+.home-section-head {
+  margin-bottom: 30px;
+}
+
+.home-section-head h2 {
+  font-size: 32px;
+  margin: 0;
+  color: var(--navy);
+}
+
+.home-section-card .programs-grid,
+.home-section-card .courses-grid {
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .home-section-card { padding: 30px 22px; }
+  .home-section-head h2 { font-size: 25px; }
+}
 
 /* ---------- Discord community (homepage) ---------- */
 .discord-section {
@@ -3328,6 +3366,8 @@ body.programs-page-bg {
      final CTA) sitting further inset than the hero / how-it-works. */
   .premium-features-section,
   .discord-section,
+  .home-programs-section,
+  .home-courses-section,
   .testimonials-section,
   .final-cta-section {
     padding-left: 18px;
