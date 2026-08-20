@@ -30,9 +30,6 @@ Improve and extend JSS's existing website: audit live pages, build prototypes fo
 - Chrome DevTools (mobile emulation, Network tab for load-time checks)
 - GitHub (version control for audit notes and prototypes)
 ## How to View the Prototype
-See [`https://meryam9.github.io/JSS-Website-Audit/Edtech/index.html`](.https://meryam9.github.io/JSS-Website-Audit/Edtech/index.html)
-## How to View the Report
-See [`reports/JSS_Week1_Audit-Report.pdf`](./reports/JSS_Week1_Audit-Report.pdf) for the full Week 1 audit report, including findings, suggested changes, and the ranked priority list.
-
+See https://meryam9.github.io/JSS-Website-Audit/Edtech/index.html
 ## Status / Next Steps
 Week 1 complete. Week 2 will focus on building prototypes for the top-ranked priorities, starting with color-theme unification and the mobile enrollment flow.
