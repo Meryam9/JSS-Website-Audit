@@ -226,7 +226,7 @@ const FOOTER_HTML = `<style>
     <div class="footer-col footer-col-explore">
       <h5>Explore Learning</h5>
       <ul>
-        <li><a href="certificate-programs.html">Certificate Programs</a></li>
+        <li><a href="programs.html">Certificate Programs</a></li>
         <li><a href="courses.html">Individual IT Courses</a></li>
         <li><a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener" class="accent">Premium Membership</a></li>
       </ul>
