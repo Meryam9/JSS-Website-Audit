@@ -56,6 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const toggle = root.querySelector("#navToggle");
       const nav = root.querySelector("#mainNav");
 
+      // Solid-white header on scroll: at the very top the header can stay
+      // translucent/blurred, but once the page scrolls we make it fully
+      // opaque so the logo never shows page content bleeding through it.
+      if (headerEl) {
+        const SCROLL_THRESHOLD = 8;
+        const updateScrollState = () => {
+          headerEl.classList.toggle("is-scrolled", window.scrollY > SCROLL_THRESHOLD);
+        };
+        updateScrollState();
+        window.addEventListener("scroll", updateScrollState, { passive: true });
+      }
+
       if (headerEl && toggle && nav) {
         const closeMenu = () => {
           headerEl.classList.remove("nav-open");

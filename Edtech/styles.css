@@ -65,6 +65,15 @@ button { font-family: inherit; cursor: pointer; }
   top: 0;
   z-index: 30;
   box-shadow: 0 8px 24px rgba(7, 17, 31, 0.06);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Once the page is scrolled, go fully solid so the logo never shows
+   page content bleeding through the translucent/blurred header. */
+.site-header.is-scrolled {
+  background: #ffffff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .header-inner {
