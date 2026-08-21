@@ -339,11 +339,30 @@
 
   .courses-search-section .course-navigation{
     gap:9px;
+    /* Becomes the positioning anchor for the dropdown menus below, so a
+       menu always opens centered under the whole filter row instead of
+       under whichever button was tapped (which could sit off to one side
+       of the screen, e.g. the left column of the 2-up grid on phones). */
+    position:relative;
+  }
+
+  .courses-search-section .course-filter-dropdown{
+    position:static;
   }
 
   .courses-search-section .course-filter-trigger{
     min-width:142px;
     min-height:44px;
+  }
+
+  .courses-search-section .course-filter-menu{
+    left:50%;
+    right:auto;
+    transform:translate(-50%,-6px);
+  }
+
+  .courses-search-section .course-filter-dropdown.open .course-filter-menu{
+    transform:translate(-50%,0);
   }
 }
 
@@ -367,6 +386,7 @@
     width:min(235px,calc(100vw - 36px));
   }
 }
+
 
 @media (max-width:360px){
   .courses-search-section .courses-search-wrap{
