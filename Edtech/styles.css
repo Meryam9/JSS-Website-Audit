@@ -58,9 +58,7 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------- Header ---------- */
 .site-header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.45);
-  background: rgba(255, 255, 255, 0.74);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 30;
