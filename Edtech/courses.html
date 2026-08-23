@@ -1,1221 +1,1764 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Individual Courses — EdTech4D</title>
-<link rel="stylesheet" href="styles.css">
-<style>
-/* Course filter navigation — page scoped
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Individual Courses — EdTech4D</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Course filter navigation — page scoped
    Does not modify styles.css or affect other pages. */
 
-.courses-search-section .courses-search-wrap{
-  width:100%;
-  max-width:1180px;
-  margin:28px auto 0;
-  padding:0 32px;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:18px;
-}
+    .courses-search-section .courses-search-wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 28px auto 0;
+      padding: 0 32px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
 
-.courses-search-section .course-filter-intro{
-  width:100%;
-  text-align:center;
-  margin:0;
-}
+    .courses-search-section .course-filter-intro {
+      width: 100%;
+      text-align: center;
+      margin: 0;
+    }
 
-.courses-search-section .course-filter-intro-eyebrow{
-  display:block;
-  margin:0 0 7px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:#4a86ff;
-}
+    .courses-search-section .course-filter-intro-eyebrow {
+      display: block;
+      margin: 0 0 7px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #4a86ff;
+    }
 
-.courses-search-section .course-filter-intro h2{
-  margin:0 0 6px;
-  font-size:25px;
-  line-height:1.25;
-  font-weight:800;
-  color:#14213d;
-}
+    .courses-search-section .course-filter-intro h2 {
+      margin: 0 0 6px;
+      font-size: 25px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: #14213d;
+    }
 
-.courses-search-section .course-filter-intro p{
-  max-width:650px;
-  margin:0 auto;
-  color:#667085;
-  font-size:13.5px;
-  line-height:1.55;
-}
+    .courses-search-section .course-filter-intro p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #667085;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
 
-/* The four filter dropdowns sit in one clean row on desktop. */
-.courses-search-section .course-navigation{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:12px;
-  margin:2px auto 0;
-}
+    /* The four filter dropdowns sit in one clean row on desktop. */
+    .courses-search-section .course-navigation {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 2px auto 0;
+    }
 
-/* Each filter is its own positioned dropdown. */
-.courses-search-section .course-filter-dropdown{
-  position:relative;
-  flex:0 0 auto;
-}
+    /* Each filter is its own positioned dropdown. */
+    .courses-search-section .course-filter-dropdown {
+      position: relative;
+      flex: 0 0 auto;
+    }
 
-.courses-search-section .course-filter-trigger{
-  min-width:150px;
-  min-height:46px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  padding:0 15px;
-  border:1px solid rgba(74,134,255,.18);
-  border-radius:13px;
-  background:#fff;
-  color:#1b2a4d;
-  font:600 13px/1 inherit;
-  box-shadow:0 5px 18px rgba(27,42,77,.08);
-  cursor:pointer;
-  transition:all .2s ease;
-}
+    .courses-search-section .course-filter-trigger {
+      min-width: 150px;
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 15px;
+      border: 1px solid rgba(74, 134, 255, .18);
+      border-radius: 13px;
+      background: #fff;
+      color: #1b2a4d;
+      font: 600 13px/1 inherit;
+      box-shadow: 0 5px 18px rgba(27, 42, 77, .08);
+      cursor: pointer;
+      transition: all .2s ease;
+    }
 
-.courses-search-section .course-filter-trigger:hover,
-.courses-search-section .course-filter-dropdown.open .course-filter-trigger{
-  border-color:#4a86ff;
-  box-shadow:0 8px 22px rgba(74,134,255,.16);
-  transform:translateY(-1px);
-}
+    .courses-search-section .course-filter-trigger:hover,
+    .courses-search-section .course-filter-dropdown.open .course-filter-trigger {
+      border-color: #4a86ff;
+      box-shadow: 0 8px 22px rgba(74, 134, 255, .16);
+      transform: translateY(-1px);
+    }
 
-.courses-search-section .course-filter-dropdown.has-selection .course-filter-trigger{
-  background:#f4f8ff;
-  border-color:#4a86ff;
-  color:#245fc5;
-}
+    .courses-search-section .course-filter-dropdown.has-selection .course-filter-trigger {
+      background: #f4f8ff;
+      border-color: #4a86ff;
+      color: #245fc5;
+    }
 
-.courses-search-section .filter-selected-count{
-  display:none;
-  min-width:20px;
-  height:20px;
-  padding:0 6px;
-  box-sizing:border-box;
-  align-items:center;
-  justify-content:center;
-  border-radius:999px;
-  background:#4a86ff;
-  color:#fff;
-  font-size:10px;
-  font-weight:800;
-}
+    .courses-search-section .filter-selected-count {
+      display: none;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #4a86ff;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+    }
 
-.courses-search-section .course-filter-dropdown.has-selection .filter-selected-count{
-  display:inline-flex;
-}
+    .courses-search-section .course-filter-dropdown.has-selection .filter-selected-count {
+      display: inline-flex;
+    }
 
-.courses-search-section .filter-chevron{
-  width:16px;
-  height:16px;
-  color:#667085;
-  transition:transform .2s ease;
-}
+    .courses-search-section .filter-chevron {
+      width: 16px;
+      height: 16px;
+      color: #667085;
+      transition: transform .2s ease;
+    }
 
-.courses-search-section .course-filter-dropdown.open .filter-chevron{
-  transform:rotate(180deg);
-}
+    .courses-search-section .course-filter-dropdown.open .filter-chevron {
+      transform: rotate(180deg);
+    }
 
-/* Pretty dropdown panel. */
-.courses-search-section .course-filter-menu{
-  position:absolute;
-  z-index:100;
-  top:calc(100% + 9px);
-  left:50%;
-  width:235px;
-  padding:9px;
-  box-sizing:border-box;
-  border:1px solid rgba(74,134,255,.14);
-  border-radius:16px;
-  background:#fff;
-  box-shadow:0 18px 45px rgba(27,42,77,.16);
-  opacity:0;
-  visibility:hidden;
-  transform:translate(-50%,-6px);
-  transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
-}
+    /* Pretty dropdown panel. */
+    .courses-search-section .course-filter-menu {
+      position: absolute;
+      z-index: 100;
+      top: calc(100% + 9px);
+      left: 50%;
+      width: 235px;
+      padding: 9px;
+      box-sizing: border-box;
+      border: 1px solid rgba(74, 134, 255, .14);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(27, 42, 77, .16);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, -6px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+    }
 
-.courses-search-section .course-filter-dropdown.open .course-filter-menu{
-  opacity:1;
-  visibility:visible;
-  transform:translate(-50%,0);
-}
+    .courses-search-section .course-filter-dropdown.open .course-filter-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
 
-.courses-search-section .course-filter-menu-title{
-  padding:8px 10px 9px;
-  color:#667085;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-}
+    .courses-search-section .course-filter-menu-title {
+      padding: 8px 10px 9px;
+      color: #667085;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
 
-.courses-search-section .course-filter-option{
-  width:100%;
-  min-height:38px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 10px;
-  border:0;
-  border-radius:10px;
-  background:transparent;
-  color:#344054;
-  text-align:left;
-  font:600 13px/1.2 inherit;
-  cursor:pointer;
-  transition:background .15s ease,color .15s ease;
-}
+    .courses-search-section .course-filter-option {
+      width: 100%;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #344054;
+      text-align: left;
+      font: 600 13px/1.2 inherit;
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease;
+    }
 
-.courses-search-section .course-filter-option:hover{
-  background:#f4f8ff;
-  color:#245fc5;
-}
+    /* Track has more options than the other filters, so its list caps at
+       3 rows (matching Level's height) and scrolls for the rest instead
+       of growing the whole dropdown taller. */
+    .courses-search-section .course-filter-options-scroll {
+      max-height: 114px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #1b2a4d #f3f5f8;
+    }
 
-.courses-search-section .filter-check{
-  width:20px;
-  height:20px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 20px;
-  border:1.5px solid #cbd5e1;
-  border-radius:6px;
-  color:transparent;
-  background:#fff;
-  font-size:12px;
-  font-weight:900;
-  transition:all .15s ease;
-}
+    .courses-search-section .course-filter-options-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
 
-.courses-search-section .course-filter-option.is-selected .filter-check{
-  border-color:#4a86ff;
-  background:#4a86ff;
-  color:#fff;
-}
+    .courses-search-section .course-filter-options-scroll::-webkit-scrollbar-track {
+      background: #f3f5f8;
+      border-radius: 999px;
+    }
 
-.courses-search-section .course-filter-option.is-selected{
-  background:#f4f8ff;
-  color:#245fc5;
-}
+    .courses-search-section .course-filter-options-scroll::-webkit-scrollbar-thumb {
+      background: #1b2a4d;
+      border-radius: 999px;
+    }
 
-.courses-search-section .filter-option-text{
-  flex:1;
-}
+    .courses-search-section .course-filter-options-scroll::-webkit-scrollbar-thumb:hover {
+      background: #14213d;
+    }
 
-.courses-search-section .filter-menu-footer{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  margin-top:7px;
-  padding:8px 3px 2px;
-  border-top:1px solid #eef2f7;
-}
+    .courses-search-section .course-filter-option:hover {
+      background: #f4f8ff;
+      color: #245fc5;
+    }
 
-.courses-search-section .filter-clear-btn,
-.courses-search-section .filter-done-btn{
-  border:0;
-  border-radius:9px;
-  padding:8px 13px;
-  font:700 11.5px/1 inherit;
-  cursor:pointer;
-}
+    .courses-search-section .filter-check {
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 20px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      color: transparent;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      transition: all .15s ease;
+    }
 
-.courses-search-section .filter-clear-btn{
-  background:#f3f5f8;
-  color:#667085;
-}
+    .courses-search-section .course-filter-option.is-selected .filter-check {
+      border-color: #4a86ff;
+      background: #4a86ff;
+      color: #fff;
+    }
 
-.courses-search-section .filter-done-btn{
-  background:#1b2a4d;
-  color:#fff;
-}
+    .courses-search-section .course-filter-option.is-selected {
+      background: #f4f8ff;
+      color: #245fc5;
+    }
 
-.courses-search-section .filter-clear-btn:hover{
-  background:#e9edf3;
-}
+    .courses-search-section .filter-option-text {
+      flex: 1;
+    }
 
-.courses-search-section .filter-done-btn:hover{
-  filter:brightness(1.12);
-}
+    .courses-search-section .filter-menu-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 7px;
+      padding: 8px 3px 2px;
+      border-top: 1px solid #eef2f7;
+    }
 
-/* Selected filters appear as removable pills, like the reference design. */
-.courses-search-section .filter-active-summary{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:7px;
-  min-height:0;
-  margin:0 auto;
-}
+    .courses-search-section .filter-clear-btn,
+    .courses-search-section .filter-done-btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 8px 13px;
+      font: 700 11.5px/1 inherit;
+      cursor: pointer;
+    }
 
-.courses-search-section .filter-summary-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 9px 6px 11px;
-  border:1px solid #bfe7f5;
-  border-radius:999px;
-  background:#f3fbfe;
-  color:#29b6d9;
-  font-size:11.5px;
-  font-weight:700;
-}
+    .courses-search-section .filter-clear-btn {
+      background: #f3f5f8;
+      color: #667085;
+    }
 
-.courses-search-section .filter-summary-remove{
-  width:17px;
-  height:17px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:rgba(41,182,217,.12);
-  color:#1599b9;
-  font:700 13px/17px inherit;
-  cursor:pointer;
-}
+    .courses-search-section .filter-done-btn {
+      background: #1b2a4d;
+      color: #fff;
+    }
 
-.courses-search-section .filter-summary-remove:hover{
-  background:#29b6d9;
-  color:#fff;
-}
+    .courses-search-section .filter-clear-btn:hover {
+      background: #e9edf3;
+    }
 
-.courses-search-section .filter-clear-all{
-  display:none;
-  border:0;
-  background:transparent;
-  color:#667085;
-  font:700 11.5px/1 inherit;
-  cursor:pointer;
-  text-decoration:underline;
-  text-underline-offset:3px;
-}
+    .courses-search-section .filter-done-btn:hover {
+      filter: brightness(1.12);
+    }
 
-.courses-search-section .filter-clear-all.visible{
-  display:inline-block;
-}
+    /* Selected filters appear as removable pills, like the reference design. */
+    .courses-search-section .filter-active-summary {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 0;
+      margin: 0 auto;
+    }
 
-.courses-search-section .course-count-pill{
-  margin:1px auto 0;
-  padding:8px 15px;
-  border-radius:999px;
-  background:#f5f8fc;
-  color:#1b2a4d;
-  font-size:12px;
-  font-weight:800;
-}
+    .courses-search-section .filter-summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px 6px 11px;
+      border: 1px solid #bfe7f5;
+      border-radius: 999px;
+      background: #f3fbfe;
+      color: #29b6d9;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
 
-/* Mobile: dropdowns stay easy to tap and the menu remains inside the viewport. */
-@media (max-width:760px){
-  .courses-search-section .courses-search-wrap{
-    margin-top:18px;
-    padding:0 18px;
-    gap:15px;
-  }
+    .courses-search-section .filter-summary-remove {
+      width: 17px;
+      height: 17px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(41, 182, 217, .12);
+      color: #1599b9;
+      font: 700 13px/17px inherit;
+      cursor: pointer;
+    }
 
-  .courses-search-section .course-filter-intro h2{
-    font-size:21px;
-  }
+    .courses-search-section .filter-summary-remove:hover {
+      background: #29b6d9;
+      color: #fff;
+    }
 
-  .courses-search-section .course-filter-intro p{
-    font-size:12.5px;
-  }
+    .courses-search-section .filter-clear-all {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: #667085;
+      font: 700 11.5px/1 inherit;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
 
-  .courses-search-section .course-navigation{
-    gap:9px;
-    /* Becomes the positioning anchor for the dropdown menus below, so a
+    .courses-search-section .filter-clear-all.visible {
+      display: inline-block;
+    }
+
+    .courses-search-section .course-count-pill {
+      margin: 1px auto 0;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: #f5f8fc;
+      color: #1b2a4d;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* Mobile: dropdowns stay easy to tap and the menu remains inside the viewport. */
+    @media (max-width:760px) {
+      .courses-search-section .courses-search-wrap {
+        margin-top: 18px;
+        padding: 0 18px;
+        gap: 15px;
+      }
+
+      .courses-search-section .course-filter-intro h2 {
+        font-size: 21px;
+      }
+
+      .courses-search-section .course-filter-intro p {
+        font-size: 12.5px;
+      }
+
+      .courses-search-section .course-navigation {
+        gap: 9px;
+        /* Becomes the positioning anchor for the dropdown menus below, so a
        menu always opens centered under the whole filter row instead of
        under whichever button was tapped (which could sit off to one side
        of the screen, e.g. the left column of the 2-up grid on phones). */
-    position:relative;
-  }
+        position: relative;
+      }
 
-  .courses-search-section .course-filter-dropdown{
-    position:static;
-  }
+      .courses-search-section .course-filter-dropdown {
+        position: static;
+      }
 
-  .courses-search-section .course-filter-trigger{
-    min-width:142px;
-    min-height:44px;
-  }
+      .courses-search-section .course-filter-trigger {
+        min-width: 142px;
+        min-height: 44px;
+      }
 
-  .courses-search-section .course-filter-menu{
-    left:50%;
-    right:auto;
-    transform:translate(-50%,-6px);
-  }
+      .courses-search-section .course-filter-menu {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -6px);
+      }
 
-  .courses-search-section .course-filter-dropdown.open .course-filter-menu{
-    transform:translate(-50%,0);
-  }
-}
+      .courses-search-section .course-filter-dropdown.open .course-filter-menu {
+        transform: translate(-50%, 0);
+      }
+    }
 
-@media (max-width:500px){
-  .courses-search-section .course-navigation{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    width:100%;
-  }
+    @media (max-width:500px) {
+      .courses-search-section .course-navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
 
-  .courses-search-section .course-filter-dropdown{
-    width:100%;
-  }
+      .courses-search-section .course-filter-dropdown {
+        width: 100%;
+      }
 
-  .courses-search-section .course-filter-trigger{
-    width:100%;
-    min-width:0;
-  }
+      .courses-search-section .course-filter-trigger {
+        width: 100%;
+        min-width: 0;
+      }
 
-  .courses-search-section .course-filter-menu{
-    width:min(235px,calc(100vw - 36px));
-  }
-}
+      .courses-search-section .course-filter-menu {
+        width: min(235px, calc(100vw - 36px));
+      }
+    }
 
 
-@media (max-width:360px){
-  .courses-search-section .courses-search-wrap{
-    padding:0 12px;
-  }
+    @media (max-width:360px) {
+      .courses-search-section .courses-search-wrap {
+        padding: 0 12px;
+      }
 
-  .courses-search-section .course-navigation{
-    grid-template-columns:1fr;
-  }
+      .courses-search-section .course-navigation {
+        grid-template-columns: 1fr;
+      }
 
-  .courses-search-section .course-filter-menu{
-    left:50%;
-  }
-}
-</style>
+      .courses-search-section .course-filter-menu {
+        left: 50%;
+      }
+    }
+  </style>
 </head>
+
 <body class="programs-page-bg">
 
-<div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
 
-<section class="catalog-hero">
-  <div class="catalog-hero-inner">
-    <div class="catalog-hero-left">
-      <span class="catalog-eyebrow">Individual Learning Options</span>
-      <h1>Browse IT Courses</h1>
-      <p>Not ready for a full program? Pick a single course and build one skill at a time.</p>
-      <div class="catalog-cta-row">
-        <!-- <a href="https://www.jobskillshare.org/?ref=maryam#/membership" class="catalog-btn catalog-btn-light"> -->
-        <a href="https://www.jobskillshare.org/?ref=maryam#/membership"
-          class="catalog-btn catalog-btn-light"
-          target="_blank"
-          rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21v-1a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7v1"></path></svg>
-          Explore Membership
-        </a>
-      </div>
-    </div>
-
-    <div class="catalog-stats-grid">
-      <div class="catalog-stat-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"></path></svg>
-        <strong>10+</strong>
-        <span>Programs</span>
-      </div>
-      <div class="catalog-stat-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-        <strong>21+</strong>
-        <span>Courses in Programs</span>
-      </div>
-      <div class="catalog-stat-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        <strong>2,844</strong>
-        <span>Lessons</span>
-      </div>
-      <div class="catalog-stat-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
-        <strong>535+</strong>
-        <span>Learning Hours</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="courses-search-section">
-  <div class="courses-search-wrap">
-    <div class="course-filter-intro">
-      <span class="course-filter-intro-eyebrow">FIND YOUR COURSE</span>
-      <h2>Filter by Track, Level &amp; Delivery</h2>
-      <p>Choose one or more options below to find the courses that match your learning goals.</p>
-    </div>
-    <div class="course-navigation" aria-label="Course navigation and filters">
-
-      <div class="course-filter-dropdown" data-filter-type="track">
-        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
-          <span>Track</span>
-          <span class="filter-selected-count" aria-hidden="true">0</span>
-          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-        <div class="course-filter-menu">
-          <div class="course-filter-menu-title">Choose track</div>
-          <button type="button" class="course-filter-option" data-value="it-support"><span class="filter-check">✓</span><span class="filter-option-text">IT Support</span></button>
-          <button type="button" class="course-filter-option" data-value="cloud"><span class="filter-check">✓</span><span class="filter-option-text">Cloud</span></button>
-          <button type="button" class="course-filter-option" data-value="cybersecurity"><span class="filter-check">✓</span><span class="filter-option-text">CyberSecurity</span></button>
-          <button type="button" class="course-filter-option" data-value="ai"><span class="filter-check">✓</span><span class="filter-option-text">AI</span></button>
-          <button type="button" class="course-filter-option" data-value="networking"><span class="filter-check">✓</span><span class="filter-option-text">Networking</span></button>
-          <button type="button" class="course-filter-option" data-value="freelancing"><span class="filter-check">✓</span><span class="filter-option-text">Freelancing</span></button>
-          <div class="filter-menu-footer">
-            <button type="button" class="filter-clear-btn">Clear</button>
-            <button type="button" class="filter-done-btn">Done</button>
-          </div>
+  <section class="catalog-hero">
+    <div class="catalog-hero-inner">
+      <div class="catalog-hero-left">
+        <span class="catalog-eyebrow">Individual Learning Options</span>
+        <h1>Browse IT Courses</h1>
+        <p>Not ready for a full program? Pick a single course and build one skill at a time.</p>
+        <div class="catalog-cta-row">
+          <!-- <a href="https://www.jobskillshare.org/?ref=maryam#/membership" class="catalog-btn catalog-btn-light"> -->
+          <a href="https://www.jobskillshare.org/?ref=maryam#/membership" class="catalog-btn catalog-btn-light"
+            target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21v-1a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7v1"></path>
+            </svg>
+            Explore Membership
+          </a>
         </div>
       </div>
 
-      <div class="course-filter-dropdown" data-filter-type="level">
-        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
-          <span>Level</span>
-          <span class="filter-selected-count" aria-hidden="true">0</span>
-          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"></polyline>
+      <div class="catalog-stats-grid">
+        <div class="catalog-stat-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="6"></circle>
+            <path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"></path>
           </svg>
-        </button>
-        <div class="course-filter-menu">
-          <div class="course-filter-menu-title">Choose level</div>
-          <button type="button" class="course-filter-option" data-value="beginner"><span class="filter-check">✓</span><span class="filter-option-text">Beginner</span></button>
-          <button type="button" class="course-filter-option" data-value="intermediate"><span class="filter-check">✓</span><span class="filter-option-text">Intermediate</span></button>
-          <button type="button" class="course-filter-option" data-value="advanced"><span class="filter-check">✓</span><span class="filter-option-text">Advanced</span></button>
-          <div class="filter-menu-footer">
-            <button type="button" class="filter-clear-btn">Clear</button>
-            <button type="button" class="filter-done-btn">Done</button>
-          </div>
+          <strong>10+</strong>
+          <span>Programs</span>
+        </div>
+        <div class="catalog-stat-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <strong>21+</strong>
+          <span>Courses in Programs</span>
+        </div>
+        <div class="catalog-stat-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <strong>2,844</strong>
+          <span>Lessons</span>
+        </div>
+        <div class="catalog-stat-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg>
+          <strong>535+</strong>
+          <span>Learning Hours</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="course-filter-dropdown" data-filter-type="delivery">
-        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
-          <span>Delivery</span>
-          <span class="filter-selected-count" aria-hidden="true">0</span>
-          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-        <div class="course-filter-menu">
-          <div class="course-filter-menu-title">Choose delivery</div>
-          <button type="button" class="course-filter-option" data-value="self-paced"><span class="filter-check">✓</span><span class="filter-option-text">Self-Paced</span></button>
-          <div class="filter-menu-footer">
-            <button type="button" class="filter-clear-btn">Clear</button>
-            <button type="button" class="filter-done-btn">Done</button>
+  <section class="courses-search-section">
+    <div class="courses-search-wrap">
+      <div class="course-filter-intro">
+        <span class="course-filter-intro-eyebrow">FIND YOUR COURSE</span>
+        <h2>Filter by Track, Level &amp; Delivery</h2>
+        <p>Choose one or more options below to find the courses that match your learning goals.</p>
+      </div>
+      <div class="course-navigation" aria-label="Course navigation and filters">
+
+        <div class="course-filter-dropdown" data-filter-type="track">
+          <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+            <span>Track</span>
+            <span class="filter-selected-count" aria-hidden="true">0</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="course-filter-menu">
+            <div class="course-filter-menu-title">Choose track</div>
+            <div class="course-filter-options-scroll">
+              <button type="button" class="course-filter-option" data-value="it-support"><span
+                  class="filter-check">✓</span><span class="filter-option-text">IT Support</span></button>
+              <button type="button" class="course-filter-option" data-value="cloud"><span
+                  class="filter-check">✓</span><span class="filter-option-text">Cloud</span></button>
+              <button type="button" class="course-filter-option" data-value="cybersecurity"><span
+                  class="filter-check">✓</span><span class="filter-option-text">CyberSecurity</span></button>
+              <button type="button" class="course-filter-option" data-value="ai"><span class="filter-check">✓</span><span
+                  class="filter-option-text">AI</span></button>
+              <button type="button" class="course-filter-option" data-value="networking"><span
+                  class="filter-check">✓</span><span class="filter-option-text">Networking</span></button>
+              <button type="button" class="course-filter-option" data-value="freelancing"><span
+                  class="filter-check">✓</span><span class="filter-option-text">Freelancing</span></button>
+              <button type="button" class="course-filter-option" data-value="microsoft"><span
+                  class="filter-check">✓</span><span class="filter-option-text">Microsoft</span></button>
+              <button type="button" class="course-filter-option" data-value="devops"><span
+                  class="filter-check">✓</span><span class="filter-option-text">DevOps</span></button>
+              <button type="button" class="course-filter-option" data-value="comptia"><span
+                  class="filter-check">✓</span><span class="filter-option-text">CompTIA</span></button>
+              <button type="button" class="course-filter-option" data-value="powershell"><span
+                  class="filter-check">✓</span><span class="filter-option-text">PowerShell</span></button>
+              <button type="button" class="course-filter-option" data-value="python"><span
+                  class="filter-check">✓</span><span class="filter-option-text">Python</span></button>
+            </div>
+            <div class="filter-menu-footer">
+              <button type="button" class="filter-clear-btn">Clear</button>
+              <button type="button" class="filter-done-btn">Done</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="course-filter-dropdown" data-filter-type="type">
-        <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
-          <span>Course Type</span>
-          <span class="filter-selected-count" aria-hidden="true">0</span>
-          <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-        <div class="course-filter-menu">
-          <div class="course-filter-menu-title">Choose course type</div>
-          <button type="button" class="course-filter-option" data-value="free"><span class="filter-check">✓</span><span class="filter-option-text">Free Courses</span></button>
-          <div class="filter-menu-footer">
-            <button type="button" class="filter-clear-btn">Clear</button>
-            <button type="button" class="filter-done-btn">Done</button>
+        <div class="course-filter-dropdown" data-filter-type="level">
+          <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+            <span>Level</span>
+            <span class="filter-selected-count" aria-hidden="true">0</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="course-filter-menu">
+            <div class="course-filter-menu-title">Choose level</div>
+            <button type="button" class="course-filter-option" data-value="beginner"><span
+                class="filter-check">✓</span><span class="filter-option-text">Beginner</span></button>
+            <button type="button" class="course-filter-option" data-value="intermediate"><span
+                class="filter-check">✓</span><span class="filter-option-text">Intermediate</span></button>
+            <button type="button" class="course-filter-option" data-value="advanced"><span
+                class="filter-check">✓</span><span class="filter-option-text">Advanced</span></button>
+            <div class="filter-menu-footer">
+              <button type="button" class="filter-clear-btn">Clear</button>
+              <button type="button" class="filter-done-btn">Done</button>
+            </div>
           </div>
         </div>
+
+        <div class="course-filter-dropdown" data-filter-type="delivery">
+          <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+            <span>Delivery</span>
+            <span class="filter-selected-count" aria-hidden="true">0</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="course-filter-menu">
+            <div class="course-filter-menu-title">Choose delivery</div>
+            <button type="button" class="course-filter-option" data-value="self-paced"><span
+                class="filter-check">✓</span><span class="filter-option-text">Self-Paced</span></button>
+            <div class="filter-menu-footer">
+              <button type="button" class="filter-clear-btn">Clear</button>
+              <button type="button" class="filter-done-btn">Done</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="course-filter-dropdown" data-filter-type="type">
+          <button type="button" class="course-filter-trigger" aria-expanded="false" aria-haspopup="true">
+            <span>Course Type</span>
+            <span class="filter-selected-count" aria-hidden="true">0</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="course-filter-menu">
+            <div class="course-filter-menu-title">Choose course type</div>
+            <button type="button" class="course-filter-option" data-value="free"><span
+                class="filter-check">✓</span><span class="filter-option-text">Free Courses</span></button>
+            <div class="filter-menu-footer">
+              <button type="button" class="filter-clear-btn">Clear</button>
+              <button type="button" class="filter-done-btn">Done</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
+      <div class="filter-active-summary" id="filterActiveSummary" aria-live="polite">
+        <button type="button" class="filter-clear-all" id="filterClearAll">Clear all</button>
+      </div>
+      <span class="course-count-pill" id="courseCount">29 Courses</span>
     </div>
+  </section>
 
-    <div class="filter-active-summary" id="filterActiveSummary" aria-live="polite">
-      <button type="button" class="filter-clear-all" id="filterClearAll">Clear all</button>
-    </div>
-    <span class="course-count-pill" id="courseCount">29 Courses</span>
-  </div>
-</section>
+  <section class="courses-grid" id="coursesGrid">
 
-<section class="courses-grid" id="coursesGrid">
+    <article class="course-card" data-name="Advance IT Support - Modern Desktop Administrator" data-track="it-support"
+      data-level="advanced" data-delivery="self-paced">
+      <img src="assets/images/it-support-graphic.webp" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg></div>
+        <span class="badge course-badge-free">Free Course</span>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Advance IT Support - Modern Desktop Administrator</h3>
+      <p class="card-desc">Master advanced IT support skills essential for modern desktop administrators.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>490</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>25 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Upgrading &
+          Configuring Windows updates</span>
+      </div>
+      <a href="course-it-support.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Advance IT Support - Modern Desktop Administrator" data-track="it-support" data-level="advanced" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-      <span class="badge course-badge-free">Free Course</span>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Advance IT Support - Modern Desktop Administrator</h3>
-    <p class="card-desc">Master advanced IT support skills essential for modern desktop administrators, focusing on Windows 10 environments and preparing for the MD-100/101 exams.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>490</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>25 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Upgrading & Configuring Windows updates</span>
-    </div>
-    <a href="course-it-support.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="AI for IT Professionals - Knowledge Sharing" data-track="ai"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/course-thumb-ai.jpg" alt="AI course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="8" width="18" height="12" rx="2"></rect>
+            <circle cx="8.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle>
+            <circle cx="15.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle>
+            <path d="M9 8V5a3 3 0 0 1 6 0v3"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>AI for IT Professionals - Knowledge Sharing</h3>
+      <p class="card-desc">Explore AI's role within IT settings and integrate AI insights into
+        IT support, networking and cloud.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>13</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>6 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">AI
+          integration</span>
+        <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Ansible automation
+          with AI</span>
+      </div>
+      <a href="course-ai-for-it.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="AI for IT Professionals - Knowledge Sharing" data-track="ai" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"></rect><circle cx="8.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle><circle cx="15.5" cy="14" r="1.5" fill="#fff" stroke="none"></circle><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>AI for IT Professionals - Knowledge Sharing</h3>
-    <p class="card-desc">Explore AI's role within IT settings and enhance your ability to integrate AI insights into IT support, networking, cloud, and cybersecurity tasks.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>13</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>6 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">AI integration</span>
-      <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Ansible automation with AI</span>
-    </div>
-    <a href="course-ai-for-it.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Cybersecurity Technical Skills by an Expert" data-track="cybersecurity"
+      data-level="advanced" data-delivery="self-paced">
+      <img src="assets/images/cybersecurity-graphic.webp" alt="Cybersecurity course illustration"
+        class="course-card-thumb" loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Cybersecurity Technical Skills by an Expert</h3>
+      <p class="card-desc">Discover the skills to secure digital worlds with expert-led cybersecurity training.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>77</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>34 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Red & Blue
+          Teaming</span>
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">SOC/SIEM
+          management</span>
+      </div>
+      <a href="course-cybersecurity.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Cybersecurity Technical Skills by an Expert" data-track="cybersecurity" data-level="advanced" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Cybersecurity Technical Skills by an Expert</h3>
-    <p class="card-desc">Discover the skills to secure digital worlds with expert-led cybersecurity training.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>77</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>34 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Red & Blue Teaming</span>
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">SOC/SIEM management</span>
-    </div>
-    <a href="course-cybersecurity.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Cloud Administrator - Basics" data-track="cloud" data-level="beginner"
+      data-delivery="self-paced">
+      <img src="assets/images/cloud.jpg" alt="Cloud computing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+        <span class="badge course-badge-free">Free Course</span>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Cloud Administrator - Basics</h3>
+      <p class="card-desc">Gain foundational cloud computing skills with a focus on Microsoft Azure.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>193</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>20 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Cloud
+          Computing</span>
+        <span class="tag-pill"
+          style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Virtualization</span>
+      </div>
+      <a href="course-cloud-administrator.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Cloud Administrator - Basics" data-track="cloud" data-level="beginner" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-      <span class="badge course-badge-free">Free Course</span>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Cloud Administrator - Basics</h3>
-    <p class="card-desc">Gain foundational cloud computing skills with a focus on Microsoft Azure. Ideal for beginners and IT professionals transitioning to cloud roles.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>193</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>20 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Cloud Computing</span>
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#7c6cf640; background:#7c6cf614;">Virtualization</span>
-    </div>
-    <a href="course-cloud-administrator.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="AWS Cloud Administrator - Fundamentals" data-track="cloud"
+      data-level="beginner" data-delivery="self-paced">
+      <img src="assets/images/aws-cloud.jpg" alt="Cloud computing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>AWS Cloud Administrator - Fundamentals</h3>
+      <p class="card-desc">Master the essentials of cloud management to deliver hands-on experience across key services.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>25</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>6 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">AWS cloud
+          fundamentals, EC2 & EBS operations</span>
+      </div>
+      <a href="course-aws-fundamental.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="AWS Cloud Administrator - Fundamentals" data-track="cloud" data-level="beginner" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>AWS Cloud Administrator - Fundamentals</h3>
-    <p class="card-desc">Master the essentials of cloud management with our AWS Cloud Administrator Fundamentals course, designed to deliver hands-on experience across key services.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>25</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>6 hours</strong> Time</span></div>
-    </div>
-     <div class="card-tags">
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">AWS cloud fundamentals, EC2 & EBS operations</span>
-    </div>
-    <a href="course-aws-fundamental.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="AWS Cloud Administrator Course - Advance" data-track="cloud"
+      data-level="advanced" data-delivery="self-paced">
+      <img src="assets/images/aws-adv.jpg" alt="Cloud computing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>AWS Cloud Administrator Course - Advance</h3>
+      <p class="card-desc">Deepen your skills in managing and
+        optimizing AWS services without a DevOps focus.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>52</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>10 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">IAM & EC2 instance
+          configuration</span>
+      </div>
+      <a href="course-aws-advance.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="AWS Cloud Administrator Course - Advance" data-track="cloud" data-level="advanced" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>AWS Cloud Administrator Course - Advance</h3>
-    <p class="card-desc">Master AWS Cloud Administration with our advanced course. Deepen your skills in managing and optimizing AWS services without a DevOps focus.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>52</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>10 hours</strong> Time</span></div>
-    </div>
-     <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">IAM & EC2 instance configuration</span>
-    </div>
-    <a href="course-aws-advance.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="AWS DevOps Engineer Certificate" data-track="cloud"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/devops.jpg" alt="Cloud computing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>AWS DevOps Engineer Certificate</h3>
+      <p class="card-desc">Become a DevOps expert & master technologies like
+        Docker, Terraform, Jenkins, Kubernetes.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>100</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>20 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">DevOps
+          Implementation & Docker</span>
+      </div>
+      <a href="course-aws-devops.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="AWS DevOps Engineer Certificate" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>AWS DevOps Engineer Certificate</h3>
-    <p class="card-desc">Become a DevOps expert with our AWS DevOps Engineer Certificate. Master technologies like Docker, Terraform, Jenkins, Kubernetes, and more.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>100</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>20 hours</strong> Time</span></div>
-    </div>
-     <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">DevOps Implementation & Docker</span>
-    </div>
-    <a href="course-aws-devops.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Azure DevOps: Real-World Case Studies" data-track="cloud"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/income-growth-ai.webp" alt="Cloud computing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="6" rx="1.5"></rect>
+            <rect x="4" y="15" width="16" height="6" rx="1.5"></rect>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Azure DevOps: Real-World Case Studies</h3>
+      <p class="card-desc">Master Azure DevOps through real-world case studies to implement modern
+        DevOps practices.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>152</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>20 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">Project Management &
+          CI/CD Pipelines</span>
+      </div>
+      <a href="course-azure-devops.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Azure DevOps: Real-World Case Studies" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="6" rx="1.5"></rect><rect x="4" y="15" width="16" height="6" rx="1.5"></rect></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Azure DevOps: Real-World Case Studies</h3>
-    <p class="card-desc">Master Azure DevOps through real-world case studies and hands-on labs to implement modern DevOps practices confidently.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>152</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>20 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#16c79a40; background:#16c79a14;">Project Management & CI/CD Pipelines</span>
-    </div>
-    <a href="course-azure-devops.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Cisco CCNA (200-301) Networking Skills" data-track="networking"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/network-hardware-circuit.jpg" alt="Networking course illustration"
+        class="course-card-thumb" loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Cisco CCNA (200-301) Networking Skills</h3>
+      <p class="card-desc">Master the essential networking skills needed for Cisco CCNA exam and
+        elevate your career.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>77</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>10 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Router configuration
+          & Network segmentation</span>
+      </div>
+      <a href="course-cico-ccna.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Cisco CCNA (200-301) Networking Skills" data-track="networking" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Cisco CCNA (200-301) Networking Skills</h3>
-    <p class="card-desc">Master the essential networking skills needed to pass the Cisco CCNA (200-301) exam and elevate your career.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>77</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>10 hours</strong> Time</span></div>
-    </div>
-     <div class="card-tags">
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Router configuration & Network segmentation</span>
-    </div>
-    <a href="course-cico-ccna.html"  class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Cisco Core Networking - Packet Tracer" data-track="networking"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/cisco-core.webp" alt="Networking course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Cisco Core Networking - Packet Tracer</h3>
+      <p class="card-desc">Master Cisco networking concepts & skills using Packet Tracer for practical,
+        hands-on learning.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>92</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>30 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Cisco
+          networking</span>
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">IP routing &
+          Subnetting</span>
+      </div>
+      <a href="course-cisco-core.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Cisco Core Networking - Packet Tracer" data-track="networking" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Cisco Core Networking - Packet Tracer</h3>
-    <p class="card-desc">Master essential Cisco networking concepts and skills using Packet Tracer for practical, hands-on learning.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>92</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>30 hours</strong> Time</span></div>
-    </div>
-     <div class="card-tags">
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Cisco networking</span>
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">IP routing & Subnetting</span>
-    </div>
-    <a href="course-cisco-core.html"  class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="CompTIA Linux+ (XK0-005)" data-track="it-support" data-level="intermediate"
+      data-delivery="self-paced">
+      <img src="assets/images/ai-data.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>CompTIA Linux+ (XK0-005)</h3>
+      <p class="card-desc">Gain practical skills in Linux management with our hands-on CompTIA Linux+ course.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>84</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>14 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2fc4e6; border-color:#2fc4e640; background:#2fc4e614;">File system
+          navigation & Management</span>
+      </div>
+      <a href="course-comptia-linux.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="CompTIA Linux+ (XK0-005)" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>CompTIA Linux+ (XK0-005)</h3>
-    <p class="card-desc">Gain practical skills in Linux management and configuration with our hands-on CompTIA Linux+ (XK0-005) course.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>84</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>14 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-    <span class="tag-pill" style="color:#2fc4e6; border-color:#2fc4e640; background:#2fc4e614;">File system navigation & Management</span>
-    </div>
-    <a href="course-comptia-linux.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 1" data-track="cybersecurity"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/comptia.jpg" alt="Cybersecurity course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>CompTIA Security+ Training (SY0-701) Part 1</h3>
+      <p class="card-desc">Master the essential concepts of cybersecurity and prepare for the CompTIA Security+
+        certification.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>112</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>32 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#e5484d; border-color:#e5484d40; background:#e5484d14;">Security
+          architecture & Control management</span>
+      </div>
+      <a href="course-comptia-sec1.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 1" data-track="cybersecurity" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>CompTIA Security+ Training (SY0-701) Part 1</h3>
-    <p class="card-desc">Master the essential concepts of cybersecurity and prepare for the CompTIA Security+ certification with our comprehensive Part 1 training.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>112</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>32 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#e5484d; border-color:#e5484d40; background:#e5484d14;">Security architecture & Control management</span>
-    </div>
-    <a href="course-comptia-sec1.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 2" data-track="cybersecurity"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/comptia2.jpg" alt="Cybersecurity course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>CompTIA Security+ Training (SY0-701) Part 2</h3>
+      <p class="card-desc">Enhance your cybersecurity skills. Master
+        practical skills for identifying and mitigating security threats.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>85</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>14 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#e5484d; border-color:#e5484d40; background:#e5484d14;">Network Analysis &
+          Cryptography</span>
+      </div>
+      <a href="course-comptia-sec2.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="CompTIA Security+ Training (SY0-701) Part 2" data-track="cybersecurity" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#e5484d;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>CompTIA Security+ Training (SY0-701) Part 2</h3>
-    <p class="card-desc">Enhance your cybersecurity skills with CompTIA Security+ Training (SY0-701) Part 2. Master practical skills for identifying and mitigating security threats.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>85</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>14 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#e5484d; border-color:#e5484d40; background:#e5484d14;">Network Analysis & Cryptography</span>
-    </div>
-    <a href="course-comptia-sec2.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Freelancing - Sell Your Skills and Make Money Online"
+      data-track="freelancing" data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/freelance.jpg" alt="Freelancing course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Freelancing - Sell Your Skills and Make Money Online</h3>
+      <p class="card-desc">Turn your skills into a thriving freelance business with our course,
+       and Make Money Online."</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>20</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>4 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Profile & Gig
+          creation</span>
+        <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Keyword
+          research</span>
+      </div>
+      <a href="course-freelancing.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Freelancing - Sell Your Skills and Make Money Online" data-track="freelancing" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Freelancing - Sell Your Skills and Make Money Online</h3>
-    <p class="card-desc">Turn your skills into a thriving freelance business with our comprehensive course, "Freelancing - Sell Your Skills and Make Money Online."</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>20</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>4 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Profile & Gig creation</span>
-      <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Keyword research</span>
-    </div>
-    <a href="course-freelancing.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="IT Support Resume, Applying for Jobs and Communities"
+      data-track="it-support" data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/it-resume.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg></div>
+        <span class="badge course-badge-free">Free Course</span>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>IT Support Resume, Applying for Jobs and Communities</h3>
+      <p class="card-desc">Master the art of job searching and resume building to kickstart your IT support career.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>20</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>6 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Resume
+          Building</span>
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Interview
+          Preparation</span>
+      </div>
+      <a href="course-it-resume.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="IT Support Resume, Applying for Jobs and Communities" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
-      <span class="badge course-badge-free">Free Course</span>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>IT Support Resume, Applying for Jobs and Communities</h3>
-    <p class="card-desc">Master the art of job searching and resume building to kickstart your IT support career.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>20</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>6 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Resume Building</span>
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Interview Preparation</span>
-    </div>
-    <a href="course-it-resume.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="IT Support: Active Directory and Tech Skills" data-track="it-support"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/it-dashboard-analytics.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg></div>
+        <span class="badge course-badge-free">Free Course</span>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>IT Support: Active Directory and Tech Skills</h3>
+      <p class="card-desc">Master IT skills, focusing on Active Directory, to excel
+        in managing system resources and security.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>119</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>13 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Active Directory
+          Management</span>
+      </div>
+      <a href="course-it-directory.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="IT Support: Active Directory and Tech Skills" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-      <span class="badge course-badge-free">Free Course</span>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>IT Support: Active Directory and Tech Skills</h3>
-    <p class="card-desc">Master IT support skills, focusing on Active Directory and technical applications, to excel in managing system resources and security.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>119</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>13 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Active Directory Management</span>
-    </div>
-    <a href="course-it-directory.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="IT Support: People Skills for IT Professionals" data-track="it-support"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/ppl-it.jpg" alt="IT support course illustration" class="course-card-thumb" loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg></div>
+        <span class="badge course-badge-free">Free Course</span>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>IT Support: People Skills for IT Professionals</h3>
+      <p class="card-desc">Enhance your IT support role with exceptional skills & professional communication
+        strategies.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>24</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>5 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Professional
+          Communication</span>
+        <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Listening
+          skills</span>
+      </div>
+      <a href="course-it-ppl.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="IT Support: People Skills for IT Professionals" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#7c6cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-      <span class="badge course-badge-free">Free Course</span>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>IT Support: People Skills for IT Professionals</h3>
-    <p class="card-desc">Enhance your IT support role with exceptional people skills and professional communication strategies. Dive into comprehensive modules designed to build confidence when working with end users.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>24</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>5 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Professional Communication</span>
-      <span class="tag-pill" style="color:#7c6cf6; border-color:#7c6cf640; background:#7c6cf614;">Listening skills</span>
-    </div>
-    <a href="course-it-ppl.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Microsoft 365 for IT Professionals" data-track="it-support"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/micro-365.webp" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="m2 6 10 7 10-7"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Microsoft 365 for IT Professionals</h3>
+      <p class="card-desc">Master Microsoft 365 administration with a focus on Entra ID, Exchange Online, & PowerShell.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>68</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>9 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#e07b1e; border-color:#e07b1e40; background:#e07b1e14;">Microsoft 365 &
+          PowerShell Automation</span>
+      </div>
+      <a href="course-micro-365.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Microsoft 365 for IT Professionals" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#e07b1e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7 10-7"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Microsoft 365 for IT Professionals</h3>
-    <p class="card-desc">Master Microsoft 365 administration with a focus on Entra ID, Exchange Online, and PowerShell automation for IT professionals.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>68</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>9 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#e07b1e; border-color:#e07b1e40; background:#e07b1e14;">Microsoft 365 & PowerShell Automation</span>
-    </div>
-    <a href="course-micro-365.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Microsoft Azure Administrator Training (AZ-104)" data-track="cloud"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/micro-azure.png" alt="Cloud computing course illustration" class="course-card-thumb"
+        style="object-position: center 10%;" loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Microsoft Azure Administrator Training (AZ-104)</h3>
+      <p class="card-desc">Master the skills needed to effectively implement & monitor Microsoft
+        Azure infrastructures.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>140</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>45 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2fc4e6; border-color:#2fc4e640; background:#2fc4e614;">Microsoft 365 &
+          PowerShell Automation</span>
+      </div>
+      <a href="course-azure-admin.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Microsoft Azure Administrator Training (AZ-104)" data-track="cloud" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2fc4e6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Microsoft Azure Administrator Training (AZ-104)</h3>
-    <p class="card-desc">Master the essential skills needed to effectively implement, manage, and monitor Microsoft Azure infrastructures with our comprehensive AZ-104 course.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>140</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>45 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2fc4e6; border-color:#2fc4e640; background:#2fc4e614;">Microsoft 365 & PowerShell Automation</span>
-    </div>
-    <a href="course-azure-admin.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Microsoft Exchange Online - Administrator" data-track="it-support"
+      data-level="intermediate" data-delivery="self-paced">
+      <img src="assets/images/micro-exchange.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="m2 6 10 7 10-7"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Microsoft Exchange Online - Administrator</h3>
+      <p class="card-desc">Master the administration of Microsoft Exchange Online and elevate your email management
+        skills.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>44</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>22 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Microsoft Exchange
+          Online administration</span>
+      </div>
+      <a href="course-micro-exchange.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Microsoft Exchange Online - Administrator" data-track="it-support" data-level="intermediate" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#ec4899;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7 10-7"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Microsoft Exchange Online - Administrator</h3>
-    <p class="card-desc">Master the administration of Microsoft Exchange Online and elevate your email management skills. Essential training for IT professionals.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>44</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>22 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#ec4899; border-color:#ec489940; background:#ec489914;">Microsoft Exchange Online administration</span>
-    </div>
-     <a href="course-micro-exchange.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Powershell Basics & Skills" data-track="it-support" data-level="beginner"
+      data-delivery="self-paced">
+      <img src="assets/images/powershell.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Powershell Basics & Skills</h3>
+      <p class="card-desc">Master PowerShell effectively in both on-premises & cloud environments with our
+        comprehensive course.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>39</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>14 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">PowerShell
+          Syntax</span>
+        <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Scripting
+          Policies</span>
+      </div>
+      <a href="course-powershell.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Powershell Basics & Skills" data-track="it-support" data-level="beginner" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#2f7cf6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Powershell Basics & Skills</h3>
-    <p class="card-desc">Master PowerShell effectively in both on-premises and cloud environments with our comprehensive course designed for IT professionals.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>39</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>14 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">PowerShell Syntax</span>
-      <span class="tag-pill" style="color:#2f7cf6; border-color:#2f7cf640; background:#2f7cf614;">Scripting Policies</span>
-    </div>
-    <a href="course-powershell.html"  class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+    <article class="course-card" data-name="Python Fundamentals for Data Science Beginners" data-track="python"
+      data-level="beginner" data-delivery="self-paced">
+      <img src="assets/images/code-systems.jpg" alt="IT support course illustration" class="course-card-thumb"
+        loading="lazy">
+      <div class="course-card-top">
+        <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+          </svg></div>
+      </div>
+      <p class="eyebrow">JobSkillShare Course</p>
+      <h3>Python Fundamentals for Data Science Beginners</h3>
+      <p class="card-desc">Master Python fundamentals & lay the groundwork for a career in data science & automation.</p>
+      <div class="card-stats">
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg><span><strong>16</strong> Lessons</span></div>
+        <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 3"></path>
+          </svg><span><strong>6 hours</strong> Time</span></div>
+      </div>
+      <div class="card-tags">
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Python
+          programming</span>
+        <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Data
+          manipulation</span>
+      </div>
+      <a href="course-python.html" class="card-cta">Course Details
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </article>
 
-  <article class="course-card" data-name="Python Fundamentals for Data Science Beginners" data-track="it-support" data-level="beginner" data-delivery="self-paced">
-    <div class="course-card-top">
-      <div class="card-icon" style="background:#16c79a;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg></div>
-    </div>
-    <p class="eyebrow">JobSkillShare Course</p>
-    <h3>Python Fundamentals for Data Science Beginners</h3>
-    <p class="card-desc">Master Python fundamentals and lay the groundwork for a career in data science and automation through our practical, hands-on course.</p>
-    <div class="card-stats">
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span><strong>16</strong> Lessons</span></div>
-      <div class="stat-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg><span><strong>6 hours</strong> Time</span></div>
-    </div>
-    <div class="card-tags">
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Python programming</span>
-      <span class="tag-pill" style="color:#16c79a; border-color:#16c79a40; background:#16c79a14;">Data manipulation</span>
-    </div>
-    <a href="course-python.html" class="card-cta">Course Details
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-    </a>
-  </article>
+  </section>
 
-</section>
+  <p class="no-results" id="noResults" style="display:none;">Um, no course found.</p>
 
-<p class="no-results" id="noResults" style="display:none;">Um, no course found.</p>
+  <div id="footer-placeholder"></div>
 
-<div id="footer-placeholder"></div>
+  <script src="partials.js"></script>
+  <script src="header-loader.js"></script>
+  <script src="script.js"></script>
+  <script src="footer-loader.js"></script>
+  <script>
+    const cards = Array.from(document.querySelectorAll('.course-card'));
+    const countPill = document.getElementById('courseCount');
+    const noResults = document.getElementById('noResults');
+    const dropdowns = Array.from(document.querySelectorAll('.course-filter-dropdown'));
+    const activeSummary = document.getElementById('filterActiveSummary');
+    const clearAllBtn = document.getElementById('filterClearAll');
 
-<script src="partials.js"></script>
-<script src="header-loader.js"></script>
-<script src="script.js"></script>
-<script src="footer-loader.js"></script>
-<script>
-const cards = Array.from(document.querySelectorAll('.course-card'));
-  const countPill = document.getElementById('courseCount');
-  const noResults = document.getElementById('noResults');
-  const dropdowns = Array.from(document.querySelectorAll('.course-filter-dropdown'));
-  const activeSummary = document.getElementById('filterActiveSummary');
-  const clearAllBtn = document.getElementById('filterClearAll');
+    // Each filter is an array so users can choose one OR multiple values.
+    // Clicking an already-selected option removes it.
+    const activeFilters = {
+      track: [],
+      level: [],
+      delivery: [],
+      type: []
+    };
 
-  // Each filter is an array so users can choose one OR multiple values.
-  // Clicking an already-selected option removes it.
-  const activeFilters = {
-    track: [],
-    level: [],
-    delivery: [],
-    type: []
-  };
-
-  const labels = {
-    track: {
-      'it-support': 'IT Support',
-      cloud: 'Cloud',
-      cybersecurity: 'CyberSecurity',
-      ai: 'AI',
-      networking: 'Networking',
-      freelancing: 'Freelancing'
-    },
-    level: {
-      beginner: 'Beginner',
-      intermediate: 'Intermediate',
-      advanced: 'Advanced'
-    },
-    delivery: {
-      'self-paced': 'Self-Paced'
-    },
-    type: {
-      free: 'Free Courses'
-    }
-  };
-
-  cards.forEach(card => {
-    const title = card.dataset.name || card.querySelector('h3')?.textContent || '';
-    card.dataset.search = title.toLowerCase();
-  });
-
-  function applyFilters() {
-let visible = 0;
+    const labels = {
+      track: {
+        'it-support': 'IT Support',
+        cloud: 'Cloud',
+        cybersecurity: 'CyberSecurity',
+        ai: 'AI',
+        networking: 'Networking',
+        freelancing: 'Freelancing',
+        microsoft: 'Microsoft',
+        devops: 'DevOps',
+        comptia: 'CompTIA',
+        powershell: 'PowerShell',
+        python: 'Python'
+      },
+      level: {
+        beginner: 'Beginner',
+        intermediate: 'Intermediate',
+        advanced: 'Advanced'
+      },
+      delivery: {
+        'self-paced': 'Self-Paced'
+      },
+      type: {
+        free: 'Free Courses'
+      }
+    };
 
     cards.forEach(card => {
-      const matchesSearch = true;
-     // Multiple values inside one filter = OR.
-      // Different filter categories = AND.
-      // Track filters are based ONLY on words in the course title.
-      // This means selecting "Cloud" will not show an unrelated course just
-      // because it was previously assigned to the Cloud category.
-      const trackTitleTerms = {
-        'it-support': ['it support'],
-        'cloud': ['cloud'],
-        'cybersecurity': ['cybersecurity', 'cyber security'],
-        'ai': ['ai', 'artificial intelligence'],
-        'networking': ['networking'],
-        'freelancing': ['freelance', 'freelancing']
-      };
+      const title = card.dataset.name || card.querySelector('h3')?.textContent || '';
+      card.dataset.search = title.toLowerCase();
+    });
 
-      const matchesTrack =
-        activeFilters.track.length === 0 ||
-        activeFilters.track.some(track => {
-          const termsForTrack = trackTitleTerms[track] || [];
-          return termsForTrack.some(term => {
-            const pattern = new RegExp('(^|\\W)' + term.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&') + '(?=\\W|$)', 'i');
-            return pattern.test(card.dataset.name || '');
+    function applyFilters() {
+      let visible = 0;
+
+      cards.forEach(card => {
+        const matchesSearch = true;
+        // Multiple values inside one filter = OR.
+        // Different filter categories = AND.
+        // Track filters are based ONLY on words in the course title.
+        // This means selecting "Cloud" will not show an unrelated course just
+        // because it was previously assigned to the Cloud category.
+        const trackTitleTerms = {
+          'it-support': ['it support'],
+          'cloud': ['cloud'],
+          'cybersecurity': ['cybersecurity', 'cyber security'],
+          'ai': ['ai', 'artificial intelligence'],
+          'networking': ['networking'],
+          'freelancing': ['freelance', 'freelancing'],
+          'microsoft': ['microsoft'],
+          'devops': ['devops', 'dev ops'],
+          'comptia': ['comptia'],
+          'powershell': ['powershell', 'power shell']
+        };
+
+        const matchesTrack =
+          activeFilters.track.length === 0 ||
+          activeFilters.track.some(track => {
+            const termsForTrack = trackTitleTerms[track] || [];
+            return termsForTrack.some(term => {
+              const pattern = new RegExp('(^|\\W)' + term.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&') + '(?=\\W|$)', 'i');
+              return pattern.test(card.dataset.name || '');
+            });
           });
+
+        const matchesLevel =
+          activeFilters.level.length === 0 || activeFilters.level.includes(card.dataset.level);
+
+        const matchesDelivery =
+          activeFilters.delivery.length === 0 || activeFilters.delivery.includes(card.dataset.delivery);
+
+        const matchesType =
+          activeFilters.type.length === 0 ||
+          (activeFilters.type.includes('free') && !!card.querySelector('.course-badge-free'));
+
+        const match = matchesSearch && matchesTrack && matchesLevel && matchesDelivery && matchesType;
+
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+
+      countPill.textContent = visible + (visible === 1 ? ' Course' : ' Courses');
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+      renderFilterState();
+      renderActiveSummary();
+    }
+
+    function updateDropdown(type) {
+      const dropdown = document.querySelector('.course-filter-dropdown[data-filter-type="' + type + '"]');
+      if (!dropdown) return;
+
+      const selected = activeFilters[type];
+      const options = Array.from(dropdown.querySelectorAll('.course-filter-option'));
+      const count = dropdown.querySelector('.filter-selected-count');
+
+      options.forEach(option => {
+        const isSelected = selected.includes(option.dataset.value);
+        option.classList.toggle('is-selected', isSelected);
+        option.setAttribute('aria-pressed', String(isSelected));
+      });
+
+      count.textContent = selected.length;
+      dropdown.classList.toggle('has-selection', selected.length > 0);
+    }
+
+    function renderFilterState() {
+      Object.keys(activeFilters).forEach(updateDropdown);
+    }
+
+    function renderActiveSummary() {
+      activeSummary.querySelectorAll('.filter-summary-chip').forEach(chip => chip.remove());
+
+      let hasFilters = false;
+
+      Object.entries(activeFilters).forEach(([type, values]) => {
+        values.forEach(value => {
+          hasFilters = true;
+
+          const chip = document.createElement('span');
+          chip.className = 'filter-summary-chip';
+          chip.innerHTML =
+            '<span>' + labels[type][value] + '</span>' +
+            '<button type="button" class="filter-summary-remove" aria-label="Remove ' +
+            labels[type][value] + ' filter" data-remove-type="' + type +
+            '" data-remove-value="' + value + '">×</button>';
+
+          activeSummary.insertBefore(chip, clearAllBtn);
         });
-
-      const matchesLevel =
-        activeFilters.level.length === 0 || activeFilters.level.includes(card.dataset.level);
-
-      const matchesDelivery =
-        activeFilters.delivery.length === 0 || activeFilters.delivery.includes(card.dataset.delivery);
-
-      const matchesType =
-        activeFilters.type.length === 0 ||
-        (activeFilters.type.includes('free') && !!card.querySelector('.course-badge-free'));
-
-      const match = matchesSearch && matchesTrack && matchesLevel && matchesDelivery && matchesType;
-
-      card.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-
-    countPill.textContent = visible + (visible === 1 ? ' Course' : ' Courses');
-    noResults.style.display = visible === 0 ? 'block' : 'none';
-    renderFilterState();
-    renderActiveSummary();
-  }
-
-  function updateDropdown(type) {
-    const dropdown = document.querySelector('.course-filter-dropdown[data-filter-type="' + type + '"]');
-    if (!dropdown) return;
-
-    const selected = activeFilters[type];
-    const options = Array.from(dropdown.querySelectorAll('.course-filter-option'));
-    const count = dropdown.querySelector('.filter-selected-count');
-
-    options.forEach(option => {
-      const isSelected = selected.includes(option.dataset.value);
-      option.classList.toggle('is-selected', isSelected);
-      option.setAttribute('aria-pressed', String(isSelected));
-    });
-
-    count.textContent = selected.length;
-    dropdown.classList.toggle('has-selection', selected.length > 0);
-  }
-
-  function renderFilterState() {
-    Object.keys(activeFilters).forEach(updateDropdown);
-  }
-
-  function renderActiveSummary() {
-    activeSummary.querySelectorAll('.filter-summary-chip').forEach(chip => chip.remove());
-
-    let hasFilters = false;
-
-    Object.entries(activeFilters).forEach(([type, values]) => {
-      values.forEach(value => {
-        hasFilters = true;
-
-        const chip = document.createElement('span');
-        chip.className = 'filter-summary-chip';
-        chip.innerHTML =
-          '<span>' + labels[type][value] + '</span>' +
-          '<button type="button" class="filter-summary-remove" aria-label="Remove ' +
-          labels[type][value] + ' filter" data-remove-type="' + type +
-          '" data-remove-value="' + value + '">×</button>';
-
-        activeSummary.insertBefore(chip, clearAllBtn);
-      });
-    });
-
-    clearAllBtn.classList.toggle('visible', hasFilters);
-  }
-
-  dropdowns.forEach(dropdown => {
-    const type = dropdown.dataset.filterType;
-    const trigger = dropdown.querySelector('.course-filter-trigger');
-    const doneBtn = dropdown.querySelector('.filter-done-btn');
-    const clearBtn = dropdown.querySelector('.filter-clear-btn');
-
-    trigger.addEventListener('click', event => {
-      event.stopPropagation();
-
-      dropdowns.forEach(other => {
-        if (other !== dropdown) {
-          other.classList.remove('open');
-          other.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
-        }
       });
 
-      const isOpen = dropdown.classList.toggle('open');
-      trigger.setAttribute('aria-expanded', String(isOpen));
-    });
+      clearAllBtn.classList.toggle('visible', hasFilters);
+    }
 
-    dropdown.querySelectorAll('.course-filter-option').forEach(option => {
-      option.addEventListener('click', event => {
+    dropdowns.forEach(dropdown => {
+      const type = dropdown.dataset.filterType;
+      const trigger = dropdown.querySelector('.course-filter-trigger');
+      const doneBtn = dropdown.querySelector('.filter-done-btn');
+      const clearBtn = dropdown.querySelector('.filter-clear-btn');
+
+      trigger.addEventListener('click', event => {
         event.stopPropagation();
 
-        const value = option.dataset.value;
-        const index = activeFilters[type].indexOf(value);
+        dropdowns.forEach(other => {
+          if (other !== dropdown) {
+            other.classList.remove('open');
+            other.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
+          }
+        });
 
-        if (index === -1) {
-          activeFilters[type].push(value);
-        } else {
-          // Selecting an option again UNSELECTS it.
-          activeFilters[type].splice(index, 1);
-        }
+        const isOpen = dropdown.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+      });
 
+      dropdown.querySelectorAll('.course-filter-option').forEach(option => {
+        option.addEventListener('click', event => {
+          event.stopPropagation();
+
+          const value = option.dataset.value;
+          const index = activeFilters[type].indexOf(value);
+
+          if (index === -1) {
+            activeFilters[type].push(value);
+          } else {
+            // Selecting an option again UNSELECTS it.
+            activeFilters[type].splice(index, 1);
+          }
+
+          applyFilters();
+        });
+      });
+
+      clearBtn.addEventListener('click', event => {
+        event.stopPropagation();
+        activeFilters[type] = [];
         applyFilters();
+      });
+
+      doneBtn.addEventListener('click', event => {
+        event.stopPropagation();
+        dropdown.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
       });
     });
 
-    clearBtn.addEventListener('click', event => {
-      event.stopPropagation();
-      activeFilters[type] = [];
+    clearAllBtn.addEventListener('click', () => {
+      Object.keys(activeFilters).forEach(type => {
+        activeFilters[type] = [];
+      });
       applyFilters();
     });
 
-    doneBtn.addEventListener('click', event => {
-      event.stopPropagation();
-      dropdown.classList.remove('open');
-      trigger.setAttribute('aria-expanded', 'false');
+    activeSummary.addEventListener('click', event => {
+      const remove = event.target.closest('.filter-summary-remove');
+      if (!remove) return;
+
+      const type = remove.dataset.removeType;
+      const value = remove.dataset.removeValue;
+      const index = activeFilters[type].indexOf(value);
+
+      if (index !== -1) {
+        activeFilters[type].splice(index, 1);
+      }
+
+      applyFilters();
     });
-  });
-
-  clearAllBtn.addEventListener('click', () => {
-    Object.keys(activeFilters).forEach(type => {
-      activeFilters[type] = [];
+    document.addEventListener('click', event => {
+      if (!event.target.closest('.course-filter-dropdown')) {
+        dropdowns.forEach(dropdown => {
+          dropdown.classList.remove('open');
+          dropdown.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
+        });
+      }
     });
+
+    renderFilterState();
+    renderActiveSummary();
     applyFilters();
-  });
-
-  activeSummary.addEventListener('click', event => {
-    const remove = event.target.closest('.filter-summary-remove');
-    if (!remove) return;
-
-    const type = remove.dataset.removeType;
-    const value = remove.dataset.removeValue;
-    const index = activeFilters[type].indexOf(value);
-
-    if (index !== -1) {
-      activeFilters[type].splice(index, 1);
-    }
-
-    applyFilters();
-  });
-document.addEventListener('click', event => {
-    if (!event.target.closest('.course-filter-dropdown')) {
-      dropdowns.forEach(dropdown => {
-        dropdown.classList.remove('open');
-        dropdown.querySelector('.course-filter-trigger').setAttribute('aria-expanded', 'false');
-      });
-    }
-  });
-
-  renderFilterState();
-  renderActiveSummary();
-  applyFilters();
-</script>
+  </script>
 </body>
+
 </html>
