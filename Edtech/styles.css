@@ -1006,15 +1006,13 @@ body.programs-page-bg {
 
 .program-card.card-selected,
 .faq-card.card-selected {
-  border-color: #ec4899;
-  box-shadow:
-    0 0 0 3px rgba(236, 72, 153, 0.18),
-    0 18px 38px rgba(7, 17, 31, 0.1);
+  border-color: rgba(74, 134, 255, 0.32);
+  box-shadow: 0 22px 44px rgba(7, 17, 31, 0.12);
 }
 
 .program-card.card-selected:focus-visible,
 .faq-card.card-selected:focus-visible {
-  outline: 3px solid #ec4899;
+  outline: 3px solid var(--blue);
   outline-offset: 3px;
 }
 
