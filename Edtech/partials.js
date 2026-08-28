@@ -1,3 +1,11 @@
+// Works out the path back to the site root from wherever the current
+// page lives, so the same injected header/footer markup works whether
+// the page is at the root (index.html) or one folder deep
+// (courses/*.html, programs/*.html). Needed because GitHub Pages
+// project sites are served from a sub-path (e.g. /repo-name/), so a
+// leading "/" in an href points at the wrong place.
+const SITE_ROOT = /\/(courses|programs)\//.test(window.location.pathname) ? "../" : "";
+
 // Shared header/footer markup, inlined as JS strings.
 // This avoids fetch("header.html") / fetch("footer.html"), which the
 // browser blocks with a CORS error when a page is opened directly from
@@ -20,17 +28,17 @@ const JUMPNAV_HTML = `<span class="pd-jumpnav-label">Jump to</span>
 
 const HEADER_HTML = `<header class="site-header">
   <div class="header-inner">
-    <a href="/index.html" class="logo">
+    <a href="${SITE_ROOT}index.html" class="logo">
       <div class="logo-img" role="img" aria-label="EdTech4D logo"></div>
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="/index.html" data-page="index.html">Home</a>
-      <a href="/programs.html" data-page="programs.html">Programs</a>
-      <a href="/courses.html" data-page="courses.html">Courses</a>
-      <a href="/success-stories.html" data-page="success-stories.html">Success Stories</a>
+      <a href="${SITE_ROOT}index.html" data-page="index.html">Home</a>
+      <a href="${SITE_ROOT}programs.html" data-page="programs.html">Programs</a>
+      <a href="${SITE_ROOT}courses.html" data-page="courses.html">Courses</a>
+      <a href="${SITE_ROOT}success-stories.html" data-page="success-stories.html">Success Stories</a>
       <!-- <a href="pricing.html" data-page="pricing.html">Membership</a> -->
-      <a href="/faq.html" data-page="faq.html">FAQ</a>
+      <a href="${SITE_ROOT}faq.html" data-page="faq.html">FAQ</a>
       <a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener noreferrer" class="mobile-auth-link">Login</a>
       <a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener noreferrer" class="mobile-auth-link">Create Account</a>
     </nav>
@@ -197,7 +205,7 @@ const FOOTER_HTML = `<style>
 
     <div class="footer-col footer-brand">
       <div class="footer-brand-logo">
-        <img src="/assets/images/logo.png" alt="Tech4D - Fostering Innovation &amp; Global Growth">
+        <img src="${SITE_ROOT}assets/images/logo.png" alt="Tech4D - Fostering Innovation &amp; Global Growth">
       </div>
       <p class="footer-tagline">Build job-ready technology skills through structured Certificate Programs, focused Courses, hands-on practice, and guided learning.</p>
       <div class="footer-social">
@@ -229,8 +237,8 @@ const FOOTER_HTML = `<style>
     <div class="footer-col footer-col-explore">
       <h5>Explore Learning</h5>
       <ul>
-        <li><a href="/programs.html">Certificate Programs</a></li>
-        <li><a href="/courses.html">Individual IT Courses</a></li>
+        <li><a href="${SITE_ROOT}programs.html">Certificate Programs</a></li>
+        <li><a href="${SITE_ROOT}courses.html">Individual IT Courses</a></li>
         <li><a href="https://www.jobskillshare.org/?ref=maryam#/membership" target="_blank" rel="noopener" class="accent">Premium Membership</a></li>
       </ul>
     </div>

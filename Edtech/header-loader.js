@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerHtmlPromise =
     typeof HEADER_HTML !== "undefined"
       ? Promise.resolve(HEADER_HTML)
-      : fetch("/header.html").then((res) => res.text());
+      : fetch((typeof SITE_ROOT !== "undefined" ? SITE_ROOT : "") + "header.html").then((res) => res.text());
 
   headerHtmlPromise
     .then((html) => {

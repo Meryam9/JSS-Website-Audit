@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const footerHtmlPromise =
     typeof FOOTER_HTML !== "undefined"
       ? Promise.resolve(FOOTER_HTML)
-      : fetch("/footer.html").then((res) => res.text());
+      : fetch((typeof SITE_ROOT !== "undefined" ? SITE_ROOT : "") + "footer.html").then((res) => res.text());
 
   footerHtmlPromise
     .then((html) => {
